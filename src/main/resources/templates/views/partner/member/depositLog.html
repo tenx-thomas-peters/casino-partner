@@ -1,0 +1,113 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('RequestForDeposit')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/partner/withdrawal.css}"/>
+<body>
+<section class="body member">
+    <header th:replace="template :: header" class="header"></header>
+
+    <div class="inner-wrapper">
+        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+        <section role="main" class="content-body">
+            <section class="panel" role="main">
+				<header class="panel-heading">
+					<h2 class="panel-title" th:text="#{partner.deposit.requestForDeposit}"></h2>
+				</header>
+				<div class="panel-body">
+					<form id="formSearch" th:action="@{/charge/charge}" th:object="${moneyHistory}" method="post" class="form-inline charge-form">
+						<div class="row">
+							<input type="hidden" th:field="*{receiver}" id="receiver" />
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.deposit.depositBank}"></span>
+								</label>
+								<input type="text" class="form-control" th:field="*{bankName}" disabled>
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.deposit.depositAccount}"></span>
+								</label>
+								<input type="text" class="form-control" th:field="*{accountHolder}" disabled>
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.deposit.requestAmount}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" id="requestAmount">
+								<div class="col-md-6">
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(10000)" th:text="#{partner.common.number1}"></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(50000)" th:text="#{partner.common.number5}"></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(100000)" th:text="#{partner.common.number10}"></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(500000)" th:text="#{partner.common.number50}"></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(1000000)" th:text="#{partner.common.number100}"></button>
+									<button type="button" class="btn btn-dark" onClick="reset()" th:text="#{partner.common.reset}"></button>
+								</div>
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.deposit.nameOfDeposit}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" th:field="*{nickname}" disabled>
+								<div class="col-md-6">
+									<button type="button" class="btn btn-danger" th:text="#{partner.deposit.fast}" onClick="fast();"></button>
+									<button type="button" class="btn btn-primary" th:text="#{partner.deposit.accountInquiry}" onClick="accountInquiry();"></button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped" id="moneylog-datatable">
+							<thead>
+								<tr>
+									<th class="time-field" th:text="#{partner.common.nameOfDepositor}"></th>
+									<th class="time-field" th:text="#{partner.deposit.rechargeRequestAmount}"></th>
+									<th th:text="#{partner.common.state}"></th>
+									<th th:text="#{partner.common.bonus}"></th>
+									<th th:text="#{partner.common.applicationDate}"></th>
+									<th th:text="#{partner.common.processingDateAndTime}"></th>
+									<th th:text="#{partner.common.delete}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="entity : ${page.records}" th:style="${'background:' + entity.member.color + ';'}" class="text-center">
+									<td th:text="${entity.member.nickname}"></td>
+									<td class="applicationAmount text-primary" th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									<td th:if="${entity.status == 3}" th:text="#{partner.status.partnerPayment}"></td>
+									<td th:if="${entity.status == 2}" th:text="#{partner.common.cancel}"></td>
+									<td th:if="${entity.status == 1}" th:text="#{partner.status.completed}"></td>
+									<td th:if="${entity.status == 0}" th:text="#{partner.status.inProgress}"></td>
+									<td th:text="${entity.bonus}"></td>
+									<td th:text="${#dates.format(entity.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+									<td th:text="${#dates.format(entity.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+									<td th:text="#{partner.common.hyphen}"></td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(page.records)}">
+                                    <td class="text-center" colspan="7" th:text="#{partner.common.noData}"></td>
+                                </tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="tab_cont customPage w99 t_center ptb15"></div>
+				</div>
+			</section>	
+   		</section>
+    </div>
+</section>
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[${url}]];
+	</script>
+
+	<script th:replace="template :: scripts"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+	<script th:src="@{/assets/javascripts/moneyHistory/deposit.js}"></script>
+
+</body>
+</html>

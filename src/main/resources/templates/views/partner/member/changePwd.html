@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.common.popup.title})"></head>
+<body>
+	<section class="body" >				
+		<section class="panel">
+			<header class="panel-heading" style="background: linear-gradient(to bottom, white, #d1e1f1);border: 5px solid #c6dff9; margin-top:1%;margin-bottom:1%;">
+				<h2 class="panel-title">
+					<i class="fa fa-caret-square-o-right text-primary"></i>
+					<span th:text="#{partner.pwd.changePwd}"></span>
+				</h2>
+			</header>
+			
+			<div class="panel-body">
+				<div class="col-md-12 form-group">
+					<label class="control-label col-md-2 form-label">
+						<i class="fa fa-plus-square text-primary subIcon"></i>
+						<span th:text="#{partner.pwd.currentPwd}"></span>
+					</label>
+					<div class="col-md-10">
+						<input type="password" class="form-control" style="width:100%;" name="currentPwd" />
+					</div>
+				</div>
+				<div class="col-md-12 form-group">
+					<label class="control-label col-md-2 form-label">
+						<i class="fa fa-plus-square text-primary subIcon"></i>
+						<span th:text="#{partner.pwd.newPwd}"></span>
+					</label>
+					<div class="col-md-10">
+						<input type="password" class="form-control" style="width:100%;" name="newPwd" />
+					</div>
+				</div>
+				<div class="col-md-12 form-group">
+					<label class="control-label col-md-2 form-label">
+						<i class="fa fa-plus-square text-primary subIcon"></i>
+						<span th:text="#{partner.pwd.verifyPwd}"></span>
+					</label>
+					<div class="col-md-10">
+						<input type="password" class="form-control" style="width:100%;" name="verifyPwd" />
+					</div>
+				</div>
+        	</div>
+       		<footer class="panel-footer" style="text-align:center;">
+                <button onclick="javascript: window.close();" class="btn btn-default" style="background: linear-gradient(to bottom, white, #b6d6f5);" th:text="#{partner.common.cancel}"></button>
+                <button onclick="changePassword()" class="btn btn-default" style="background: linear-gradient(to bottom, white, #b6d6f5);" th:text="#{partner.pwd.change}"></button>
+            </footer>
+		</section>
+	</section>
+	<script type="text/javascript" th:inline="javascript">
+	    var CONTEXT_ROOT = [[@{/}]];
+	    var url = [[@{/}]];
+	</script>
+	
+	<script th:replace="template :: scripts"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+	
+		function changePassword() {
+			let changeData = {
+				"currentPwd": $('input[name=currentPwd]').val(),
+				"newPwd": $('input[name=newPwd]').val(),
+				"verifyPwd": $('input[name=verifyPwd]').val()
+			};
+
+			$.ajax({
+				url: CONTEXT_ROOT + "member/updatePwd",
+				type: "POST",
+				dataType: "json",
+				data: changeData,
+				success:function(res) {
+					console.log(res);
+					if (res.success) {
+						new PNotify({
+		                    title: 'Success!',
+		                    text: res.msg,
+		                    type: 'success',
+		                    buttons: {
+		                        closer: true,
+		                        sticker: false
+		                    }
+		                });
+					} else {
+						new PNotify({
+		                    title: 'Error!',
+		                    text: res.msg,
+		                    type: 'error',
+		                    buttons: {
+		                        closer: true,
+		                        sticker: false
+		                    }
+		                });
+					}
+				}
+			})
+		}
+	
+	</script>
+</body>
+</html>

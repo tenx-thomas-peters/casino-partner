@@ -1,0 +1,171 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	  <head th:replace="template :: head ('withdraw')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/partner/withdrawal.css}"/>
+<body>
+	<section class="body">
+		<header th:replace="template :: header" class="header"></header>
+		
+		<div class="inner-wrapper">
+			<aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+			
+			<section role="main" class="content-body">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">
+							<i class="fa fa-caret-square-o-right text-primary"></i>
+							<span th:text="#{partner.withdrawal.withdrawalRequest}"></span>
+						</h2>
+					</header>
+					
+					<div class="panel-body">
+						<form id="formSearch" class="form-inline withdrawal-form" th:action="@{${url}}" method="post" th:object="${member}">
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.common.nameOfBank}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" th:field="*{bankName}" disabled />
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.common.accountHolder}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" th:field="*{accountHolder}" disabled />
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.deposit.requestAmount}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" name="requestAmount" value="0"/>
+								<input type="hidden" class="form-control col-md-4" name="sum" />
+								<div class="col-md-6">
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(10000)"><span class="btn-txt">10000</span></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(50000)"><span class="btn-txt">50000</span></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(100000)"><span class="btn-txt">100000</span></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(500000)"><span class="btn-txt">500000</span></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(1000000)"><span class="btn-txt">1000000</span></button>
+									<button type="button" class="btn btn-amount" onClick="setRequestAmount(5000000)"><span class="btn-txt">5000000</span></button>
+									<button type="button" class="btn btn-dark" onClick="reset()"><span class="btn-txt">reset</span></button>
+								</div>
+							</div>
+							<div class="col-md-12 form-group">
+								<label class="control-label col-md-1 form-label">
+									<span th:text="#{partner.common.accountHolderName}"></span>
+								</label>
+								<input type="text" class="form-control col-md-4" th:field="*{nickname}" disabled />
+								<div class="col-md-6">
+									<button type="button" class="btn btn-danger" onClick="applicationWithdrawal()">
+										<span class="btn-txt" th:text="#{partner.common.application}"></span>
+									</button>
+								</div>
+							</div>
+						</form>
+						
+						<header class="panel-subTitle">
+        					<h2 class="panel-title">
+        						<i class="fa fa-plus-square text-primary subIcon"></i>
+								<span class="sub-title" th:text="#{partner.withdrawal.withdrawalHistory}"></span>
+        					</h2>
+        				</header>
+        				<div class="table-responsive">
+        					<table class="table table-bordered table-striped" id="withdrawalHistory">
+        						<thead>
+        							<tr>
+        								<th th:text="#{partner.deposit.requestAmount}"></th>
+        								<th th:text="#{partner.common.status}"></th>
+        								<th th:text="#{partner.common.applicationDate}"></th>
+        								<th th:text="#{partner.common.processingDateAndTime}"></th>
+        							</tr>
+        						</thead>
+        						<tbody>
+        							<tr th:if="${not #lists.isEmpty(page.records)}" th:each="item : ${page.records}">
+        								<td th:text="${item.variableAmount}"></td>
+        								<td th:text="${item.status == 1 ? 'Complete' : 'Pending'}"></td>
+        								<td th:text="${#dates.format(item.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        								<td th:text="${#dates.format(item.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        							</tr>
+        							<tr th:if="${#lists.isEmpty(page.records)}">
+										<td colspan="15" class="no-reocrd" th:text="#{partner.common.noData}"></td>
+									</tr>
+        						</tbody>
+        					</table>
+        				</div>
+        				<div class="tab_cont customPage w99 t_center ptb15"></div>
+					</div>
+				</section>
+			</section>
+		</div>
+	</section>
+	
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[@{${url}}]];
+	</script>
+	
+	<script th:replace="template :: scripts"></script>
+	
+	<script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+	
+	<script type="text/javascript" th:inline="javascript">
+		function setRequestAmount(amount) {
+			var totalMoney = parseInt($('input[name=requestAmount]').val()) + parseInt(amount);
+			$('input[name=requestAmount]').val(totalMoney);
+		};
+		
+		function applicationWithdrawal() {
+			console.log($('input[name=requestAmount]').val());
+			var variableAmount = $('input[name=requestAmount]').val();
+			if (variableAmount == 0) {
+				new PNotify({
+					title: 'Application Failed!',
+                    text: 'Request Amount is 0',
+                    type: 'error',
+                    buttons: {
+                        closer: true,
+                        sticker: false
+                    }
+                });
+				return;
+			}
+			$.ajax({
+				url: CONTEXT_ROOT + 'member/applicationWithdrawal',
+				type: 'GET',
+				data: {variableAmount: variableAmount},
+				dataType: 'json',
+				success:function(res) {
+					if(res.success) {
+						new PNotify({
+		                    title: 'Success!',
+		                    text: res.msg,
+		                    type: 'success',
+		                    buttons: {
+		                        closer: true,
+		                        sticker: false
+		                    }
+		                });
+						window.location.reload();
+						return;
+					} else {
+						new PNotify({
+							title: 'Error!',
+		                    text: res.msg,
+		                    type: 'error',
+		                    buttons: {
+		                        closer: true,
+		                        sticker: false
+		                    }
+		                });
+						return;
+					}
+				}
+
+			});
+		};
+	</script>
+	
+</body>
+</html>

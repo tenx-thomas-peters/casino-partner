@@ -1,0 +1,264 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.store.storeList})"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/partner/store.css}"/>
+<body>
+	<section class="body store">
+	    <header th:replace="template :: header" class="header"></header>
+	
+	    <div class="inner-wrapper">
+	        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+	
+	        <section role="main" class="content-body">
+	            <section class="panel">
+	                <header class="panel-heading">
+	                    <h2 class="panel-title" th:text="#{partner.store.storeList}"></h2>
+	                </header>
+	                <div class="panel-body">
+	                    <form class="form-inline search-form" th:action="@{/partner/storeManagement}" id="formSearch" method="get" th:object="${store}">
+	                        <div class="form-group">
+	                        	<a class="btn btn-default store-add-form" th:text="#{partner.store.storeRegistration}">Store Registration</a>
+	                        </div>
+	                        <div class="form-group">
+	                        	<label>
+	                                <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+	                                <span th:text="#{partner.common.search} + ' ' +#{partner.common.item}"></span>
+	                           </label>
+	                            <label>
+	                                <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+	                                <span th:text="#{partner.common.date}"></span>
+	                           </label>
+	                           <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+	                                <input type="text" class="form-control"  name="fromApplicationTime" th:field="*{fromApplicationTime}">
+	                                <span class="input-group-addon">~</span>
+	                                <input type="text" class="form-control" name="toApplicationTime" th:field="*{toApplicationTime}">
+                              </div>
+	                       </div>
+	                       <div class="form-group">
+	                       		<label for="pageSize">
+	                               <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+	                               <span th:text="#{partner.common.keyword}"></span>
+	                           </label>
+	                           <select class="form-control" name="id" th:field="*{selectType}">
+	                               <option value="1" th:text="#{partner.common.id}">ID</option>
+	                               <option value="2" th:text="#{partner.common.nickname}">Nickname</option>
+	                           </select>
+	                           <input type="text" class="form-control" id="search-input" name="keyword" th:field="*{keyword}">
+	                           <button type="submit" class="btn btn-default">
+	                           		<span th:text="#{partner.common.search}">Search</span>
+	                                <i class="fa fa-search"></i>
+	                           </button>
+	                       </div>
+	                   </form>
+	                   <div class="form-group" >
+	                       	<span style="float:right;" th:text="#{partner.store.losing.amount} + ' = '"><b>Losing Amount</b></span>
+                       </div>
+	                   <div class="table-responsive">
+	                       <table class="table table-bordered table-striped store-list">
+	                           <thead>
+	                           	<tr>
+	                                <th th:text="#{partner.common.store} + #{partner.common.id}"> ID </th>
+									<th th:text="#{partner.common.nickname}"> Nickname </th>
+									<th th:text="#{partner.common.member}"> Members </th>
+									<th th:text="#{partner.statistic.depositMember}"> Deposit Member </th>
+									<th th:text="#{partner.common.deposit.partner.payment}"> Deposit [Partner] (Payment) </th>
+									<th th:text="#{partner.common.withdrawal.partner.payment}"> Withdrawal [Partner] (Payment) </th>
+									<th th:text="#{partner.member.differenceOfDepositAndWithdraw}"> Difference between Deposit and Withdrawal </th>
+									<th th:text="#{partner.store.storeSummary}"> Store Summary </th>
+									<th th:text="#{partner.common.type}"> Type </th>
+									<th th:text="#{partner.common.betAmount}"> Bet Amount </th>
+									<th th:text="#{partner.bettingSummary.winningAmount}"> Winning Amount </th>
+									<th th:text="#{partner.store.lostAmount}"> Lost Amount </th>
+									<th th:text="#{partner.store.batRolling}"> Bat Rolling </th>
+									<th th:text="#{partner.store.settlementRate}"> Settlement Rate </th>
+									<th th:text="#{partner.store.processedRollingGold}"> Processed Rolling Gold </th>
+									<th th:text="#{partner.common.status}"> State </th>
+                        	   	</tr>
+	                           </thead>
+	                           <tbody>
+	                               <tr th:each="entity, stat : ${page.records}">
+	                               		<input type="hidden" class="store-seq" th:data-key="${entity.seq}"/>
+	                                   	<td><a class="partner-store-detail" th:data-key="${entity.seq}" th:text="${entity.id}"></a></td>
+										<td th:text="${entity.nickname}"></td>
+										<td><a class="store-memberCount" th:text="${entity.memberCount}"></a></td>
+										<td th:text="${entity.depositMemberCount}"></td>
+										<td>
+											<span th:text="${#numbers.formatDecimal(entity.depositMemberAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br/>
+											<span class="text-primary" th:text="${'[' + #numbers.formatDecimal(entity.depositPartnerAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br/>
+											<span class="title-pink" th:text="${'(' + #numbers.formatDecimal(entity.depositPayment, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span>
+										</td>
+										<td>
+											<span th:text="${#numbers.formatDecimal(entity.withdrawalMemberAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br/>
+											<span class="text-primary" th:text="${'[' + #numbers.formatDecimal(entity.withdrawalPartnerAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br/>
+											<span class="title-pink" th:text="${'(' + #numbers.formatDecimal(entity.withdrawalPayment, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span>
+										</td>
+										<td>
+											<span th:class="${(entity.depositMemberAmount - entity.withdrawalMemberAmount) eq 0 ? '' : 'text-blue'}" th:text="${#numbers.formatDecimal((entity.depositMemberAmount - entity.withdrawalMemberAmount), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br/>
+											<span th:class="${(entity.depositPartnerAmount - entity.withdrawalPartnerAmount) eq 0 ? '' : 'text-blue'}" th:text="${'[' + #numbers.formatDecimal((entity.depositPartnerAmount - entity.withdrawalPartnerAmount), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br/>
+											<span th:class="${(entity.depositPayment - entity.withdrawalPayment) eq 0 ? '' : 'text-blue'}" th:text="${'(' + #numbers.formatDecimal((entity.depositPayment - entity.withdrawalPayment), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span>
+										</td>
+										<td>
+											<button class="btn btn-sm btn-default progress-bet" th:text="#{partner.common.store} + ' ' + #{partner.common.summary}">Store Summary</button>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="#{partner.common.slot}">slot</span>
+											</p>
+											<p class="bg-white-grey" >
+												<span th:text="#{partner.common.baccarat}">baccarat</span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.betAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.winningAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.lostAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${entity.gameType == 0 ? #numbers.formatDecimal(entity.batRolling, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${entity.gameType == 1 ? #numbers.formatDecimal(entity.batRolling, 1, 'COMMA', 2, 'POINT').replace('.00', '') : 0}"></span>
+											</p>
+										</td>
+										<td>
+											<p class="bg-white-yellow"style="border-bottom: 1px solid #c1c	1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(entity.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '') + '%'}"></span>
+											</p>
+											<p class="bg-white-grey">
+												<span th:text="${#numbers.formatDecimal(entity.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '') + '%'}"></span>
+											</p>
+										</td>
+										<td th:text="${entity.batRolling}"></td>
+										<td th:if="${entity.status == 0}" th:text="#{partner.common.normal}">normal</td>
+										<td th:if="${entity.status == 1}" th:text="#{partner.common.stop}">stop</td>
+	                                </tr>
+	                                <tr th:if="${page.total == 0}">
+										<td colSpan="18" class="text-center" style="padding: 20px;" th:text="#{partner.common.noData}">No Data</td>
+									</tr>
+									<tr th:if="${not #lists.isEmpty(page.records)}" class="background-primary text-default" style="background-color: #cfe7ff; color: #004675;">
+										<td th:text="#{partner.common.sum}">Sum</td>
+										<td>-</td>
+										<td th:text="${#numbers.formatDecimal(memberCountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(depositMemberCountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td>
+											<span th:text="${#numbers.formatDecimal(depositMemberAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br>
+											<span class="text-primary" th:text="${'[' + #numbers.formatDecimal(depositPartnerAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br>
+											<span class="text-danger" th:text="${'(' + #numbers.formatDecimal(depositPaymentSum, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span><br>
+										</td>
+										<td>
+											<span th:text="${#numbers.formatDecimal(withdrawalMemberAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br>
+											<span class="text-primary" th:text="${'[' + #numbers.formatDecimal(withdrawalPartnerAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br>
+											<span class="title-pink" th:text="${'(' + #numbers.formatDecimal(withdrawalPaymentSum, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span><br>
+										</td>
+										<td>
+											<span th:class="${(depositMemberAmountSum - withdrawalMemberAmountSum) eq 0 ? '' : 'text-blue'}" th:text="${#numbers.formatDecimal((depositMemberAmountSum - withdrawalMemberAmountSum), 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span><br>
+											<span class="text-primary" th:text="${'[' + #numbers.formatDecimal((depositPartnerAmountSum - withdrawalPartnerAmountSum), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ']'}"></span><br>
+											<span class="title-pink" th:text="${'(' + #numbers.formatDecimal((depositPaymentSum - withdrawalPaymentSum), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span><br>
+										</td>
+										<td>-</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="#{partner.common.slot}">slot</span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="#{partner.common.baccarat}">baccarat</span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratBetAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratWinningAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratLostAmountSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span th:text="${#numbers.formatDecimal(slotBatRollingSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span th:text="${#numbers.formatDecimal(baccaratBatRollingSum, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
+											</div>
+										</td>
+										<td>
+											<div style="border-bottom: 1px solid #c1c1c1; text-align:center;">
+												<span>-</span>
+											</div>
+											<div style="margin-top: 5px;">
+												<span>-</span>
+											</div>
+										</td>
+										<td th:text="${slotBatRollingSum + baccaratBatRollingSum}"></td>
+										<td>-</td>
+									</tr>
+	                           </tbody>
+	                        </table>
+	                   </div>
+	                   <div class="tab_cont customPage w99 t_center ptb15"></div>
+	                </div>
+	                
+	                <div class="panel-footer">
+                    </div>
+	            </section>
+	        </section>
+	    </div>
+	</section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[${url}]];
+		var txtAdd = [[#{admin.member.addition}]];
+	    var txtEdit = [[#{admin.common.edit}]];
+	    var txtDelete = [[#{admin.common.delete}]];
+	</script>
+
+	<script th:replace="template :: scripts"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+	
+	<script th:src="@{/assets/javascripts/partner/storeList.js}"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('withdrawlRequest')"></head>
+<link rel="stylesheet" th:href="@{/assets/stylesheets/partner/withdrawal.css}"/>
+<body>
+    <section class="body">
+        <header th:replace="template :: header" class="header"></header>
+        
+        <div class="inner-wrapper">
+        	<aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+        	
+        	<section role="main" class="content-body">
+        		<section class="panel">
+        			<div class="panel-body">
+        				<header class="panel-subTitle">
+        					<h2 class="panel-title">
+        						<i class="fa fa-plus-square text-primary fav-icon"></i>
+								<span class="fav-icon" th:text="#{partner.withdrawal.withdrawalHistory}"></span>
+        					</h2>
+        				</header>
+	        			
+        				<form id="formSearch" class="form-inline search-form" th:action="@{${url}}" method="post" th:object="${moneyHistory}">
+        					<div class="form-group">
+	                            <label class="control-label">
+	                                <i class="fa fa-plus-square text-primary fav-icon"></i>
+	                                <span th:text="#{partner.common.date}"></span>
+	                            </label>
+	                            <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
+	                                <span class="input-group-addon">
+	                                    <span class="icon"><i class="fa fa-search"></i></span>
+	                                </span>
+	                                <input type="text" class="form-control" th:field="*{prevApplicationTime}">
+	                                <span class="input-group-addon">~</span>
+	                                <input type="text" class="form-control" th:field="*{finalApplicationTime}">
+	                            </div>
+	                            
+	                            <label class="control-label">
+	                        		<i class="fa fa-plus-square text-primary fav-icon"></i>
+	                        		<span th:text="#{partner.common.searchItems}"></span>
+	                        	</label>
+	                        	<div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+	                                <select class="form-control" th:field="*{searchField}">
+	                                    <option value="0" th:text="#{partner.common.id}"></option>
+	                                    <option value="1" th:text="#{partner.common.nickname}"></option>
+	                                </select>
+                                </div>
+                                
+                                <label class="control-label">
+                                	<i class="fa fa-plus-square text-primary fav-icon"></i>
+                                	<span th:text="#{partner.common.searchWord}"></span>
+                                </label>
+                                <div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
+                                    <span class="input-group-addon">
+                                        <span class="icon"><i class="fa fa-search"></i></span>
+                                    </span>
+                                    <input type="text" class="form-control" th:field="*{searchValue}">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-default">
+									<span th:text="#{partner.common.search}"></span>&nbsp;<i class="fa fa-search"></i>
+								</button>
+	                        </div>
+        				</form>
+        				
+        				<header class="panel-subTitle">
+        					<h2 class="panel-title">
+        						<i class="fa fa-plus-square text-primary fav-icon"></i>
+								<span class="sub-title" th:text="#{partner.withdraw.totalWithdrawal}"><span>:</span></span>
+								<span class="sub-title" th:text="${#numbers.formatDecimal(totalWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ' won'}"></span>
+        					</h2>
+        				</header>
+        				<div class="table-responsive">
+        					<table class="table table-bordered table-striped" id="withdrawalHistory">
+        						<thead>
+        							<tr>
+        								<th th:text="#{partner.common.partnerId}"></th>
+        								<th th:text="#{partner.common.partnerNickname}"></th>
+        								<th th:text="#{partner.common.partnerLevel}"></th>
+        								<th th:text="#{partner.common.id}"></th>
+        								<th th:text="#{partner.common.nickname}"></th>
+        								<th th:text="#{partner.common.accountHolder}"></th>
+        								<th th:text="#{partner.money.log.prevAmount}"></th>
+        								<th th:text="#{partner.withdrawal.withdrawalAmount}"></th>
+        								<th th:text="#{partner.common.applicationTime}"></th>
+        								<th th:text="#{partner.common.processingTime}"></th>
+        							</tr>
+        						</thead>
+        						<tbody>
+        							<tr th:if="${not #lists.isEmpty(page.records)}" th:each="item : ${page.records}">
+        								<td th:text="${item.partnerId}"></td>
+        								<td th:text="${item.partnerNickname}"></td>
+        								<td th:text="${item.level}"></td>
+        								<td th:text="${item.id}"></td>
+        								<td th:text="${item.nickname}"></td>
+        								<td th:text="${item.accountHolder}"></td>
+        								<td th:text="${#numbers.formatDecimal(item.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+        								<td th:text="${#numbers.formatDecimal(item.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+        								<td th:text="${#dates.format(item.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        								<td th:text="${#dates.format(item.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        							</tr>
+        							<tr th:if="${#lists.isEmpty(page.records)}">
+										<td colspan="15" class="no-reocrd" th:text="#{partner.common.noData}"></td>
+									</tr>
+        						</tbody>
+        					</table>
+        				</div>
+        				<div class="tab_cont customPage w99 t_center ptb15"></div>
+        			</div>
+        		</section>
+			</section>
+        </div>
+    </section>
+    
+    <script type="text/javascript" th:inline="javascript">
+		var page = [[${page}]];
+		var url = [[${url}]];
+	</script>
+    
+    <script th:replace="template :: scripts"></script>
+	    
+    <script type="text/javascript" th:inline="javascript">
+		createPagenation(page, url);
+	</script>
+
+</body>
+</html>

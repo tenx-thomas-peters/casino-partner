@@ -1,0 +1,116 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.common.signIn})"></head>
+<body style="background: #334053;">
+<!-- start: page -->
+<section class="body-sign">
+    <div class="login-img">
+        <a th:href="@{/}">
+            <img src="assets/images/login.png"/>
+        </a>
+        
+        <div class="panel panel-sign">
+        	<div>
+        		<input id="loginUserID" type="text" class="form-control login-id" required/>
+        	</div>
+        	<div>
+        		<input id="loginUserPwd" type="password" class="form-control login-pwd" required/>
+        	</div>
+        	<div>
+        		<button type="submit" class="btn login-btn" th:text="#{partner.login.title}" onclick="signIn()"></button>
+        	</div>
+       	</div>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var CONTEXT_ROOT = [[@{/}]];
+    var url = [[@{/}]];
+</script>
+
+<script th:replace="template :: scripts">
+</script>
+<script type="text/javascript" th:inline="javascript">
+	function signIn() {
+		let postData = {
+				"loginUserID": $("#loginUserID").val(),
+				"loginUserPwd": $("#loginUserPwd").val()
+		};
+		
+		if (postData.loginUserID == null || postData.loginUserID == '') {
+			new PNotify({
+				title: 'Error!',
+	            text: 'ID Field required!',
+	            type: 'error',
+	            buttons: {
+	                closer: true,
+	                sticker: false
+	            }
+	        });
+			return;
+		}
+		
+		if (postData.loginUserPwd == null || postData.loginUserPwd == '') {
+			new PNotify({
+				title: 'Error!',
+	            text: 'Password Field required!',
+	            type: 'error',
+	            buttons: {
+	                closer: true,
+	                sticker: false
+	            }
+	        });
+			return;
+		}
+		
+		$.ajax({
+			url: CONTEXT_ROOT + 'sys/signin',
+			type: 'POST',
+			dataType: 'json',
+			data: postData,
+			success: function(res) {
+				if (res.res == "success") {
+					console.log(res);
+					new PNotify({
+	                    title: 'Success!',
+	                    text: res.msg,
+	                    type: 'success',
+	                    buttons: {
+	                        closer: true,
+	                        sticker: false
+	                    }
+	                });
+					
+					setTimeout(function() {
+	                	window.location.href = CONTEXT_ROOT + 'dashboard/index';
+	                }, 1000);
+				} else if(res.res == "error") {
+					new PNotify({
+						title: 'Error!',
+	                    text: res.msg,
+	                    type: 'error',
+	                    buttons: {
+	                        closer: true,
+	                        sticker: false
+	                    }
+	                });
+				}
+			},
+			error: function(err) {
+				new PNotify({
+					title: 'Error!',
+	                text: 'Login Failed!',
+	                type: 'error',
+	                buttons: {
+	                    closer: true,
+	                    sticker: false
+	                }
+	            });
+	        }
+		});
+	}
+</script>	
+</body>
+</html>

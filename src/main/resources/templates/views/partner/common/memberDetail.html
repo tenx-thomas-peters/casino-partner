@@ -1,0 +1,136 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.common.memberEdit})">
+</head>
+<body>
+<section class="body member-detail">
+	<div class="member" id="partnerDistributorDetail">
+		<div role="main" class="col-md-12">
+			<section class="panel">
+				<header class="panel-heading">
+					<h4 class="panel-title">
+						<i class="fa fa-caret-square-o-right text-primary"></i>[[#{partner.common.memberEdit}]]
+					</h4>
+				</header>
+				<div class="panel-body">
+					<form id="partner-distributor-update-form" name="partner-distributor" class="form-horizontal form-bordered" 
+						th:action="@{/member/update}" method="post" th:object="${memberForm}">
+                        <input type="hidden" name="seq" th:field="*{seq}" />
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.id}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                            	<p class="control-label" th:text="*{id}"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.nickname}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" name="nickname" th:field="*{nickname}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.password}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <input type="text" class="form-control" th:field="*{password}" required />
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.nameOfBank}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{bankName}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.accountNumber}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{bankNumber}"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.accountHolder}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{accountHolder}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          	<label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.cellPhone}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{phoneNumber}"></p>
+                            </div>
+                            <label class="col-md-2 col-sm-6 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.email}]]
+                            </label>
+                            <div class="col-md-4 col-sm-6">
+                                <p class="control-label" th:text="*{emailAddress}"></p>
+                            </div>
+                         </div>
+                         <div class="form-group">
+	                        <label class="col-md-2 col-sm-6 control-label">
+								<i class="fa fa-plus-square text-primary"></i>
+							    [[#{partner.member.exchangePassword}]]
+							</label>
+							<div class="col-md-4 col-sm-6">
+							    <p class="control-label" th:text="*{exchangePassword}"></p>
+							</div>
+							<label class="col-md-2 col-sm-6 control-label">
+								<i class="fa fa-plus-square text-primary"></i>
+							</label>
+							<div class="col-md-4 col-sm-6">
+							</div>
+                        </div>
+                  		<div class="form-group">
+             				<label class="col-md-2 col-sm-6 control-label">
+								<i class="fa fa-plus-square text-primary"></i>
+							    [[#{partner.common.slotRate}]]
+							</label>
+							<div class="col-md-4 col-sm-6">
+							    <input type="number" name="slotRate" class="form-control" th:value="${#numbers.formatDecimal(memberForm.slotRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"
+                                	style="width:70px; display:inline-block;" required>
+                                <span>%</span>
+							</div>
+							<label class="col-md-2 col-sm-6 control-label">
+								<i class="fa fa-plus-square text-primary"></i>
+								[[#{partner.common.baccaratRate}]]
+							</label>
+							<div class="col-md-4 col-sm-6">
+								<input type="number" name="baccaratRate" class="form-control" style="width:70px; display:inline-block;" th:value="${#numbers.formatDecimal(memberForm.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"  required="">
+                                <span>%</span>
+							</div>
+                        </div>
+                    </form>
+				</div>
+				<div class="panel-footer">
+					<div class="row text-center">
+	                    <button type="button" class="btn btn-primary update-partner-distributor-member" >Correction</button>
+	                </div>
+				</div>
+			</section>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" th:inline="javascript">
+        var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+<script th:src="@{/assets/javascripts/partner/partnerDistributorDetail.js}"></script>
+</body>
+</html>   

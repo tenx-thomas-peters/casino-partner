@@ -1,0 +1,59 @@
+.search-form {
+	border: 1px solid #dddddd;
+	margin: 10px !important;
+}
+
+.fav-icon {
+	font-size: 15px;
+}
+
+.sub-title {
+	font-size: 15px;
+}
+
+.subIcon {
+	font-size: 15px;
+	padding-top: 30px;
+}
+
+.panel-subTitle {
+	padding: 10px;
+}
+
+.table-responsive {
+	margin: 10px;
+}
+
+#withdrawalHistory {
+	text-align: center;
+}
+
+.no-record {
+	padding: 20px !important;
+	text-align: center !important;
+}
+
+.form-label {
+	padding-right: 10px;
+}
+
+.form-group {
+	padding: 5px;
+}
+
+.withdrawal-form {
+	padding-bottom: 10px;
+}
+
+.btn-amount {
+	background-color: #dcaa1f;
+	color: white;
+}
+
+.btn-txt {
+	color: white;
+}
+
+.btn-application {
+	background-color: #9e0707;
+}

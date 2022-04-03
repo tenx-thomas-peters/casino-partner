@@ -1,0 +1,256 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      class="fixed">
+    <head th:fragment="head (title)">
+        <!-- Basic -->
+        <meta charset="UTF-8">
+
+        <title th:text="${title}"></title>
+        <meta name="keywords" content="Casino Partner" />
+        <meta name="description" content="Casino Partner">
+
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- Vendor CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap/css/bootstrap.css}" />
+
+        <link rel="stylesheet" th:href="@{/assets/vendor/font-awesome/css/font-awesome.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-datepicker/css/datepicker3.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" />
+
+        <!-- Specific Page Vendor CSS -->
+        <link rel="stylesheet" th:href="@{/assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/morris/morris.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/vendor/summernote/summernote.css}" />
+        <link rel="stylesheet" th:href="@{/assets/vendor/summernote/summernote-bs3.css}" />
+
+        <!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" th:href="@{/assets/vendor/select2/select2.css}" />
+		<link rel="stylesheet" th:href="@{/assets/vendor/pnotify/pnotify.custom.css}" />
+
+        <!-- Theme CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/theme.css}" />
+
+        <!-- Skin CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/skins/default.css}" />
+
+        <!-- Theme Custom CSS -->
+        <link rel="stylesheet" th:href="@{/assets/stylesheets/theme-custom.css}">
+
+        <!-- Head Libs -->
+        <script th:src="@{/assets/vendor/modernizr/modernizr.js}"></script>
+
+        <link th:href="@{/assets/stylesheets/page.css}" rel="stylesheet" type="text/css" />
+    </head>
+<body>
+    <!-- start: header -->
+    <header th:fragment="header" class="header">
+    	<div class="row">
+    		<div class="col-md-4">
+    			<div class="logo-containter logo">
+		    		<a href="../">
+						<img th:src="@{/assets/images/logo.png}" height="45" alt="GM Partner" />
+					</a>
+					<a class="logo-title" th:text="#{partner.distributor.manager}"></a>
+					<div class="sidebar-toggle custom-sidebar-toggle" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+						<i class="fa fa-list" aria-label="Toggle sidebar"></i>
+					</div>
+		    	</div>
+    		</div>
+    		<div class="col-md-8">
+		    	<div class="header-right" style="padding-top: 15px;">
+		    		<ul class="notifications">
+		    			<li>
+		    				<i class="fa fa-copyright"></i>
+		    				<span th:text="#{partner.common.slotRate}"></span>
+		    				<span id="slotRate" class="badge bg-info"></span>
+		    			</li>
+		    			<li>
+		    				<i class="fa fa-copyright"></i>
+		    				<span th:text="#{partner.common.casinoRate}"></span>
+		    				<span id="casinoRate" class="badge bg-info"></span>
+		    			</li>
+		    			<li>
+		    				<i class="fa fa-envelope-o"></i>
+		    				<span th:text="#{partner.common.note}"></span>
+		    				<span class="badge bg-danger" id="noteCnt"></span>
+		    			</li>
+		    			<li>
+		    				<i class="fa fa-won"></i>
+		    				<span th:text="#{partner.common.holdingMoney}"></span>
+		    				<span id="holdingMoney" class="badge purple-badge"></span>
+		    			</li>
+		    			<li>
+		    				<i class="fa fa-won"></i>
+		    				<span th:text="#{partner.common.sameDayFee}"></span>
+		    				<span id="sameDayFee"></span>
+		    			</li>
+		    			<li>
+		    				<i class="fa fa-won"></i>
+		    				<span th:text="#{partner.common.feeCalculator}"></span>
+		    				<span id="feeCalculator" class="text-quartenary"></span>
+		    			</li>
+		    			<li>
+		    				<a href="#" id="logout-btn">
+		    					<i class="fa fa-sign-out"></i>
+								<span th:text="#{partner.common.logout}"></span>
+		    				</a>
+		    			</li>
+		    		</ul>
+		    	</div>
+    		</div>
+    	</div>
+    	<section class="panel mb-0">
+			<div class="panel-heading top-notice">
+				<div class="panel-actions">
+					<a href="#" class="panel-action panel-action-dismiss" data-panel-dismiss=""></a>
+				</div>
+				<span class="panel-title text-white" id="singleLineNotice"></span>
+			</div>
+		</section>
+       	 
+    </header>
+    <!-- end: header -->
+
+    <!-- start: sidebar -->
+    <aside th:fragment="sidebar" id="sidebar-left" class="sidebar-left">
+        <div class="nano">
+            <div class="nano-content">
+            	<nav id="menu" class="nav-main" role="navigation">
+            		<ul class="nav nav-main">
+            			<li class="nav-parent">
+            				<a class="first-menu">
+								<i class="fa fa-group" aria-hidden="true"></i>
+								<span th:text="#{partner.menu.membershipManagement}"></span>
+							</a>
+							<ul class="nav nav-children">
+								<li>
+									<a th:href="@{/member/list}" class="second-menu">
+										<i class="fa fa-angle-right"></i>
+										<span th:text="#{partner.menu.allMembers}"></span>
+										<i class="fa fa-star favourate-star"></i>
+									</a>
+								</li>
+								<li>
+									<a th:href="@{/charge/list}" class="second-menu">
+										<i class="fa fa-angle-right"></i>
+										<span th:text="#{partner.menu.membershipDepositApplication}"></span>
+										<i class="fa fa-star favourate-star"></i>
+									</a>
+								</li>
+								<li>
+									<a th:href="@{/member/withdrawlRequest}" class="second-menu">
+										<i class="fa fa-angle-right"></i>
+										<span th:text="#{partner.menu.memberWithdrawalDeposit}"></span>
+										<i class="fa fa-star favourate-star"></i>
+									</a>
+								</li>
+								<li>
+									<a th:href="@{/member/moneyDetail}" class="second-menu">
+										<i class="fa fa-angle-right"></i>
+										<span th:text="#{partner.menu.memberMoneyDetails}"></span>
+										<i class="fa fa-star favourate-star"></i>
+									</a>
+								</li>
+							</ul>
+            			</li>
+            			<li id="distributorMenu">
+            				<a th:href="@{/partner/distributorManagement}" class="first-menu">
+            					<i class="fa fa-table"></i>
+            					<span th:text="#{partner.menu.distributorManagement}"></span>
+            				</a>
+            			</li>
+            			<li id="storeMenu">
+            				<a th:href="@{/partner/storeManagement}" class="first-menu">
+            					<i class="fa fa-table"></i>
+            					<span th:text="#{partner.menu.storeManagement}"></span>
+            				</a>
+            			</li>
+            			<li>
+            				<a th:href="@{/charge/charge}" class="first-menu">
+            					<i class="fa fa-plug"></i>
+            					<span th:text="#{partner.menu.requestForDeposit}"></span>
+            				</a>
+            			</li>
+            			<li>
+            				<a th:href="@{/member/withdraw}" class="first-menu">
+            					<i class="fa fa-exchange"></i>
+            					<span th:text="#{partner.menu.withdrawalRequest}"></span>
+            				</a>
+            			</li>
+            			<li>
+            				<a th:href="@{/money/withdraw}" class="first-menu">
+            					<i class="fa fa-money"></i>
+            					<span th:text="#{partner.menu.moneyHistory}"></span>
+            				</a>
+            			</li>
+            			<li>
+            				<a href="javascript: window.open(CONTEXT_ROOT + 'note/inquiry', 'inquiry', 'width=1200,height=700')" class="first-menu">
+            					<i class="fa fa-envelope-o inquiry"></i>
+            					<span th:text="#{partner.menu.inquiry}"></span>
+            				</a>
+            			</li>
+            			<li>
+							<a th:href="@{/member/changePwd}" class="first-menu changePwd-popup">            					
+								<i class="fa fa-lock"></i>
+            					<span th:text="#{partner.menu.changePassword}"></span>
+            				</a>
+            			</li>
+            		</ul>
+            	</nav>
+            </div>
+        </div>
+    </aside>
+    <!-- end: sidebar -->
+
+    <div th:fragment="scripts">
+        <script type="text/javascript" th:inline="javascript">
+        	var CONTEXT_ROOT = [[@{/}]];
+        	var url = [[${url}]];
+
+            var txtAdd = [[#{admin.member.addition}]];
+            var txtEdit = [[#{admin.common.edit}]];
+            var txtDelete = [[#{admin.common.delete}]];
+
+            var width = screen.availWidth;
+            var height = screen.availHeight;
+            var top = 100;
+            var left = 100;
+            var features = "width=" + width * 5 / 6 + ", height=" + (height - 50) + ", top=" + top + ", left=" + left;           
+        </script>
+        <!-- Vendor -->
+        <script th:src="@{/assets/vendor/jquery/jquery.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.js}"></script>
+        <script th:src="@{/assets/vendor/nanoscroller/nanoscroller.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>
+        <script th:src="@{/assets/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-placeholder/jquery.placeholder.js}"></script>
+        <script th:src="@{/assets/vendor/jquery-validation/jquery.validate.js}"></script>
+        <script th:src="@{/assets/vendor/pnotify/pnotify.custom.js}"></script>
+        <script th:src="@{/assets/vendor/fullcalendar/lib/moment.min.js}"></script>
+        <script th:src="@{/assets/vendor/summernote/summernote.js}"></script>
+        <script th:src="@{/assets/vendor/select2/select2.js}"></script>
+
+        <!-- Theme Base, Components and Settings -->
+        <script th:src="@{/assets/javascripts/theme.js}"></script>
+
+        <!-- Theme Custom -->
+        <script th:src="@{/assets/javascripts/theme.custom.js}"></script>
+
+        <!-- Theme Initialization Files -->
+        <script th:src="@{/assets/javascripts/theme.init.js}"></script>
+        
+        <script th:src="@{/assets/javascripts/customPagenation.js}"></script>
+        <script th:src="@{/assets/javascripts/commonDetails.js}"></script>
+		<script th:src="@{/assets/javascripts/headerInfo.js}"></script>
+        <script th:src="@{/assets/javascripts/page.js}"></script>
+    </div>
+</body>
+</html>

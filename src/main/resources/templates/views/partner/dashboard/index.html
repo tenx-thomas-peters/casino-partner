@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head ('Dashboard')"></head>
+<body>
+<section class="body member">
+    <header th:replace="template :: header" class="header"></header>
+
+    <div class="inner-wrapper">
+        <aside th:replace="template :: sidebar" id="sidebar-left" class="sidebar-left"></aside>
+
+        <section role="main" class="content-body">
+            <section class="panel" role="main">
+				<!-- <header class="panel-heading">
+					<h2 class="panel-title" th:text="#{admin.admin.adminMain}"></h2>
+				</header> -->
+			</section>	
+   		</section>
+    </div>
+</section>
+
+<script th:replace="template :: scripts"></script>
+
+</body>
+</html>

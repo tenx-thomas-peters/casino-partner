@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.casino.modules.partner.mapper.MoneyHistoryMapper">
+	
+	<select id="findList" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT mon.seq AS "seq",
+			mon.payer AS "payer",
+			mon.receiver AS "receiver",
+			mon.application_time AS "applicationTime",
+			mon.process_time AS "processTime",
+			IFNULL(mon.prev_amount, 0) AS "prevAmount",
+			IFNULL(mon.variable_amount, 0) AS "variableAmount",
+			IFNULL(mon.actual_amount, 0) AS "actualAmount",
+			IFNULL(mon.final_amount, 0) AS "finalAmount",
+			IFNULL(mon.bonus, 0) AS "bonus",
+			mon.status AS "status",
+			mon.reason_type AS "reasonType",
+			mon.reason AS "reason",
+			mon.charge_count AS "chargeCount",
+			mon.operation_type AS "operationType",
+			mon.money_or_point AS "moneyOrPoint",
+			mon.note AS "note",
+			mon.create_by AS "createBy",
+			mon.create_time AS "createTime",
+			mon.update_by AS "updateBy",
+			mon.update_time AS "updateTime",
+			mu.seq AS "member.seq",
+			mu.id AS "member.id",
+			mu.nickname AS "member.nickname",
+			mu.color AS "member.color",
+			mu.account_holder AS "member.accountHolder",
+			mu.level_seq AS "member.levelSeq",
+			l.level_name AS "member.level",
+			mu.bank_name AS "member.bankName",
+			mu.bank_number AS "member.bankNumber",
+			mh.seq AS "member.headQuarter.seq",
+			mh.id AS "member.headQuarter.id",
+			mh.nickname AS "member.headQuarter.nickname",
+			md.seq AS "member.distributor.seq",
+			md.id AS "member.distributor.id",
+			md.nickname AS "member.distributor.nickname",
+			ms.seq AS "member.store.seq",
+			ms.id AS "member.store.id",
+			ms.nickname AS "member.store.nickname"
+		FROM money_history mon
+		INNER JOIN member mu ON mon.receiver = mu.seq
+		LEFT JOIN level l ON mu.level_seq = l.seq
+		LEFT JOIN member mh ON mu.sub_headquarter_seq = mh.seq
+		LEFT JOIN member md ON mu.distributor_seq = md.seq
+		LEFT JOIN member ms ON mu.store_seq = ms.seq
+		<where>
+			mon.operation_type = 0
+			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+				AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
+			</if>
+			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+				AND DATE(#{entity.toProcessTime}) >= DATE(mon.application_time)
+			</if>
+			<choose>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameNickName">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameAccountHolder">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.account_holder LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+			</choose>
+		</where>
+		ORDER BY
+		mon.application_time DESC
+	</select>
+	
+	<select id="findMemberMoneyLog" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT mon.seq AS "seq",
+			mon.payer AS "payer",
+			mon.receiver AS "receiver",
+			mon.application_time AS "applicationTime",
+			mon.process_time AS "processTime",
+			IFNULL(mon.prev_amount, 0) AS "prevAmount",
+			IFNULL(mon.variable_amount, 0) AS "variableAmount",
+			IFNULL(mon.actual_amount, 0) AS "actualAmount",
+			IFNULL(mon.final_amount, 0) AS "finalAmount",
+			IFNULL(mon.bonus, 0) AS "bonus",
+			mon.status AS "status",
+			mon.reason_type AS "reasonType",
+			mon.reason AS "reason",
+			mon.charge_count AS "chargeCount",
+			mon.operation_type AS "operationType",
+			mon.money_or_point AS "moneyOrPoint",
+			mon.note AS "note",
+			mon.create_by AS "createBy",
+			mon.create_time AS "createTime",
+			mon.update_by AS "updateBy",
+			mon.update_time AS "updateTime",
+			mu.seq AS "member.seq",
+			mu.id AS "member.id",
+			mu.nickname AS "member.nickname",
+			mu.color AS "member.color",
+			mu.account_holder AS "member.accountHolder",
+			mu.level_seq AS "member.levelSeq",
+			l.level_name AS "member.level",
+			mu.bank_name AS "member.bankName",
+			mu.bank_number AS "member.bankNumber",
+			mh.seq AS "member.headQuarter.seq",
+			mh.id AS "member.headQuarter.id",
+			mh.nickname AS "member.headQuarter.nickname",
+			md.seq AS "member.distributor.seq",
+			md.id AS "member.distributor.id",
+			md.nickname AS "member.distributor.nickname",
+			ms.seq AS "member.store.seq",
+			ms.id AS "member.store.id",
+			ms.nickname AS "member.store.nickname"
+		FROM money_history mon
+		INNER JOIN member mu ON mon.receiver = mu.seq
+		LEFT JOIN level l ON mu.level_seq = l.seq
+		LEFT JOIN member mh ON mu.sub_headquarter_seq = mh.seq
+		LEFT JOIN member md ON mu.distributor_seq = md.seq
+		LEFT JOIN member ms ON mu.store_seq = ms.seq
+		<where>
+			mu.user_type != #{userTypeDistributor}
+			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+				AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
+			</if>
+			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+				AND DATE(#{entity.toProcessTime}) >= DATE(mon.application_time)
+			</if>
+			<choose>
+				<when test="userType != null and userType == userTypeDistributor">
+					<if test="loginSeq != null and loginSeq != ''">
+						AND mu.distributor_seq = #{loginSeq}
+					</if>
+				</when>
+				<when test="userType != null and userType == userTypeSubHeadquarter">
+					<if test="loginSeq != null and loginSeq != ''">
+						AND mu.sub_headquarter_seq = #{loginSeq}
+					</if>
+				</when>
+			</choose>
+			<choose>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameNickName">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameAccountHolder">
+					<if test="entity.IDOrNickNameValue != null and entity.IDOrNickNameValue != ''">
+						AND mu.account_holder LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+					</if>
+				</when>
+			</choose>
+		</where>
+		ORDER BY
+		mon.application_time DESC
+	</select>
+	
+	<select id="getMonthDepositLogByMemberSeq" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT mh.seq AS "seq",
+			mh.application_time AS "applicationTime",
+			mh.process_time AS "processTime",
+			IFNULL(mh.variable_amount, 0) AS "variableAmount",
+			IFNULL(mh.actual_amount, 0) AS "actualAmount",
+			IFNULL(mh.bonus, 0) AS "bonus",
+			mh.status AS "status",
+			mh.operation_type AS "operationType",
+			mh.money_or_point AS "moneyOrPoint",
+			m.seq AS "member.seq",
+			m.id AS "member.id",
+			m.nickname AS "member.nickname",
+			m.color AS "member.color",
+			m.account_holder AS "member.accountHolder",
+			m.level_seq AS "member.levelSeq",
+			m.bank_name AS "member.bankName",
+			md.seq AS "member.distributor.seq",
+			md.id AS "member.distributor.id",
+			md.nickname AS "member.distributor.nickname"
+		FROM money_history mh
+		INNER JOIN member m ON mh.receiver = m.seq
+		LEFT JOIN member md ON m.distributor_seq = md.seq
+		<where>
+			mh.application_time BETWEEN NOW() - INTERVAL 1 MONTH AND NOW()
+			<if test="distributorSeq != null and distributorSeq != ''">
+				AND m.distributor_seq = #{distributorSeq}
+			</if>
+			<if test="operationType != null">
+				AND mh.operation_type = #{operationType}
+			</if>
+		</where>
+		ORDER BY mh.application_time DESC
+	</select>
+	
+	<select id="getWithdrawList" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT 
+			member.id as id, 
+			member.nickname as nickname, 
+			member.account_holder, 
+			IFNULL(moneyHistory.prev_amount, 0) as prevAmount,
+			IFNULL(moneyHistory.variable_amount, 0) as variableAmount,
+			moneyHistory.application_time, 
+			moneyHistory.process_time,
+			distributor.id as partnerId,
+			distributor.nickname as partnerNickname,
+			level.level_name as level
+		FROM 
+			money_history moneyHistory
+		LEFT JOIN member as member ON moneyHistory.receiver = member.seq
+		LEFT JOIN member as distributor on member.distributor_seq = distributor.seq
+		LEFT JOIN level as level on member.level_seq = level.seq
+		<where>
+			<if test="MONEY_OPERATION_TYPE_WITHDRAW != null">
+				AND moneyHistory.operation_type = #{MONEY_OPERATION_TYPE_WITHDRAW}
+			</if>
+			<if test="entity.prevApplicationTime != null">
+				AND DATE(moneyHistory.application_time) >= DATE(#{entity.prevApplicationTime})
+			</if>
+			<if test="entity.finalApplicationTime != null">
+				AND DATE(#{entity.finalApplicationTime}) >= DATE(moneyHistory.application_time)
+			</if>
+			<if test="entity.searchValue != null and entity.searchValue != ''">
+				<if test="entity.searchField != null and entity.searchField == 0">
+					AND member.id LIKE CONCAT('%', #{entity.searchValue}, '%')
+				</if>
+				<if test="entity.searchField != null and entity.searchField == 1">
+					AND member.nickname LIKE CONCAT('%', #{entity.searchValue}, '%')
+				</if>
+			</if>
+		</where>
+		ORDER BY moneyHistory.application_time DESC
+	</select>
+	
+	<select id="findPartnerMoneyLogList" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT
+			mh.process_time AS "processTime",
+			m.seq AS "member.seq",
+			m.id AS "member.id",
+			m.nickname AS "member.nickname",
+			d.str_value AS "partnerName",
+			IFNULL(mh.prev_amount, 0) AS "prevAmount",
+			IFNULL(mh.variable_amount, 0) AS "variableAmount",
+			mh.operation_type AS "operationType",
+			IFNULL(mh.final_amount, 0) AS "finalAmount",
+			mh.reason AS "reason",
+			mh.reason_type AS "reasonType",
+			mh.note AS "note"
+		FROM
+			money_history mh
+			LEFT JOIN member m ON mh.receiver = m.seq
+			LEFT JOIN dict d ON m.user_type = d.dict_value AND d.dict_key = "USER_TYPE"
+			LEFT JOIN member md ON m.sub_headquarter_seq = md.seq
+		WHERE
+			m.user_type != #{userTypeAdmin}
+			AND m.user_type != #{userTypeNormal}
+			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
+				AND DATE(mh.process_time) >= DATE(#{entity.fromProcessTime})
+			</if>
+			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
+				AND DATE(#{entity.toProcessTime}) >= DATE(mh.process_time)
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">
+				AND m.id LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+			</if>
+			<if test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameNickName">
+				AND m.nickname LIKE CONCAT('%',#{entity.IDOrNickNameValue},'%')
+			</if>
+			<if test="entity.reasonType != null and entity.reasonType != ''">
+				AND mh.reason_type = #{entity.reasonType}
+			</if>
+			<choose>
+				<when test="userType != null and userType == userTypeDistributor">
+					<if test="loginSeq != null and loginSeq != ''">
+						AND m.seq = #{loginSeq}
+					</if>
+				</when>
+				<when test="userType != null and userType == userTypeSubHeadquarter">
+					<if test="loginSeq != null and loginSeq != ''">
+						AND m.sub_headquarter_seq = #{loginSeq}
+					</if>
+				</when>
+			</choose>
+		ORDER BY
+		mh.process_time DESC
+	</select>
+	
+	<select id="getTotalWithdraw" resultType="Float">
+		SELECT
+		COALESCE(SUM(moneyHistory.actual_amount), 0) AS totalAmount
+		FROM money_history AS moneyHistory
+		INNER JOIN member as member ON moneyHistory.receiver = member.seq
+		WHERE moneyHistory.operation_type = #{MONEY_OPERATION_TYPE_WITHDRAW}
+	</select>
+	
+	<select id="getWithdrawalListByUserInfo" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+		SELECT *
+		FROM money_history AS moneyHistory
+		<where>
+			<if test="memberSeq != null and memberSeq != ''">
+				moneyHistory.receiver = #{memberSeq}
+			</if>
+			<if test="MONEY_OPERATION_TYPE_WITHDRAW != null">
+				AND moneyHistory.operation_type = #{MONEY_OPERATION_TYPE_WITHDRAW}
+			</if>
+		</where>
+		ORDER BY moneyHistory.application_time DESC
+	</select>
+</mapper>
