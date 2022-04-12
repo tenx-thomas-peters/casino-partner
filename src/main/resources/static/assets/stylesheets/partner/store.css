@@ -70,3 +70,45 @@
 .store .store-list .text-blue {
 	color: blue;
 }
+
+.store-list-popup {
+	border: 1px solid #dddddd;
+}
+
+.store-list-popup th {
+	color: white;
+}
+
+.store-list-popup thead {
+	 background-color: #5eb95e;
+}
+
+.store-list-popup th {
+	border: 1px solid #dddddd;
+}
+
+.store .store-list-popup th {
+    text-align: center;
+}
+
+.store .store-list-popup td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+}
+
+.store-list-popup td > p {
+    border-top: 1px solid #dadada;
+    padding: 8px;
+    margin: 0;
+}
+
+.store .store-list-popup td > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+.store .store-list-popup .text-blue {
+	color: blue;
+}
