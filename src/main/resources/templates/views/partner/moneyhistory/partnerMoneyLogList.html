@@ -17,7 +17,8 @@
 						<h2 class="panel-title" th:text="#{partner.money.log.Title}"></h2>
 					</header>
 					<div class="panel-body">
-						<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" class="form-inline search-form" method="post">
+						<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" class="form-inline search-form" method="post"
+						style="background: linear-gradient(to bottom, white, #d8e4f1);">
 							<div class="form-group">
 								<label class="control-label">
                                     <i class="fa fa-search" style="background-color: #0088cc;color: white;padding: 2px;"></i>
@@ -25,7 +26,7 @@
                                 </label>
                                 <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
                                     <span class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
+                                        <i class="fa fa-search"></i>
                                     </span>
                                     <input type="text" class="form-control"  th:field="*{fromProcessTime}">
                                     <span class="input-group-addon">~</span>
@@ -68,7 +69,11 @@
 										<td class="text-center" th:text="${entity.member.id}"></td>
 										<td class="text-center" th:text="${entity.member.nickname}"></td>
 										<td class="text-center" th:text="${#numbers.formatDecimal(entity.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-										<td th:class="${entity.operationType==0 || entity.operationType==3?'text-primary text-center':'text-danger text-center'}" th:text="${(entity.operationType==0 || entity.operationType==3?'':entity.variableAmount!=0?'-':'') + #numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:class="${entity.operationType==0 || entity.operationType==3?'text-primary text-center':'text-danger text-center'}"
+											th:text="${(entity.operationType==0 || entity.operationType==3?''
+											:entity.variableAmount!=0?'-':'') +
+											#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT')
+											.replace('.00', '')}"></td>
 										<td class="text-center" th:text="${#numbers.formatDecimal(entity.finalAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 										<td class="text-center" th:text="${entity.reason}"></td>
 										<td th:text="${entity.note}"></td>
