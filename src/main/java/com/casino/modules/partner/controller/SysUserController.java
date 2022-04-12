@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.casino.common.constant.CommonConstant;
 import com.casino.modules.partner.common.entity.Member;
 import com.casino.modules.partner.service.IMemberService;
 import com.casino.modules.shiro.authc.util.JwtUtil;
@@ -41,13 +42,18 @@ public class SysUserController {
             QueryWrapper<Member> qw = new QueryWrapper<>();
             qw.eq("id", loginUserID);
 			Member sysUser = memberService.getOne(qw);
-
+			
             if (sysUser != null) {
 				/*MessageDigest md = MessageDigest.getInstance("MD5");
 				String md5Pwd = Base64.encodeBase64String(md.digest(loginUserPwd.getBytes()));
 
 				if (org.apache.commons.lang.StringUtils.equals(sysUser.getPassword(), md5Pwd)) {*/
-				if(StringUtils.equals(loginUserPwd, sysUser.getPassword())) {
+            	
+            	if(sysUser.getUserType() == CommonConstant.USER_TYPE_NORMAL) {
+            		result.put("res", "error");
+                    result.put("msg", "Normal user can't login!");
+            	}
+            	else if(StringUtils.equals(loginUserPwd, sysUser.getPassword())) {
 					String token = JwtUtil.sign(loginUserID, loginUserPwd);
 					Subject subject = SecurityUtils.getSubject();
 					subject.getSession().setAttribute("token", token);
