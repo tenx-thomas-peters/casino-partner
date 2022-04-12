@@ -75,3 +75,18 @@
     white-space: nowrap;
 }
 
+.betting-popup {
+	border: 1px solid #dddddd;
+}
+
+.betting-popup th {
+	color: white;
+}
+
+.betting-popup thead {
+	 background-color: #5eb95e;
+}
+
+.betting-popup th {
+	border: 1px solid #dddddd;
+}

@@ -16,7 +16,9 @@
 					<h2 class="panel-title" th:text="#{partner.deposit.history}"></h2>
 				</header>
 				<div class="panel-body">
-					<form id="formSearch" th:action="@{${url}}" th:object="${moneyHistory}" method="post" class="form-inline search-form">
+					<form id="formSearch" th:action="@{${url}}" 
+					th:object="${moneyHistory}" method="post" class="form-inline search-form"
+					style="background: linear-gradient(to bottom, white, #d8e4f1);">
 						<div class="form-group">
                             <label class="control-label">
                                 <i class="fa fa-search text-primary"></i>

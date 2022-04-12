@@ -21,7 +21,8 @@
         					</h2>
         				</header>
 	        			
-        				<form id="formSearch" class="form-inline search-form" th:action="@{${url}}" method="post" th:object="${moneyHistory}">
+        				<form id="formSearch" class="form-inline search-form" th:action="@{${url}}" method="post" th:object="${moneyHistory}"
+        				style="background: linear-gradient(to bottom, white, #d8e4f1);">
         					<div class="form-group">
 	                            <label class="control-label">
 	                                <i class="fa fa-plus-square text-primary fav-icon"></i>
@@ -67,7 +68,7 @@
         				<header class="panel-subTitle">
         					<h2 class="panel-title">
         						<i class="fa fa-plus-square text-primary fav-icon"></i>
-								<span class="sub-title" th:text="#{partner.withdraw.totalWithdrawal}"><span>:</span></span>
+								<span class="sub-title" th:text="#{partner.withdraw.totalWithdrawal}"> : </span>
 								<span class="sub-title" th:text="${#numbers.formatDecimal(totalWithdraw, 1, 'COMMA', 2, 'POINT').replace('.00', '') + ' won'}"></span>
         					</h2>
         				</header>

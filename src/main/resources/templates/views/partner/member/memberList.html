@@ -29,7 +29,9 @@
 	                <div class="panel-body">
 	                    <form class="form-inline search-form" th:action="@{/member/list}" id="formSearch" method="get" th:object="${member}">
 	                        <div class="form-group">
-	                        	<a class="btn btn-default modal-member-add" th:text="|#{partner.common.member}| + ' ' + |#{partner.common.registration}|">Store Registration</a>
+	                        	<a class="btn btn-default modal-member-add"
+	                        	 th:text="|#{partner.common.member}| + ' ' + |#{partner.common.registration}|"
+	                        	 style="background: linear-gradient(to bottom, white, #b6d6f5);"></a>
 	                        </div>
 	                        <div class="form-group">
 	                        	<label>
@@ -39,6 +41,8 @@
 	                            <label>
 	                                <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
 	                                <span th:text="#{partner.common.date}"></span>
+	                                <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+	                                <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
 	                           </label>
 	                           <div class="input-daterange input-group" data-plugin-datepicker data-date-format="yyyy-mm-dd">
                                     <span class="input-group-addon">
@@ -50,14 +54,14 @@
                               </div>
 	                       </div>
 	                       <div class="form-group">
-	                       		<label for="pageSize">
-	                               <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
-	                               <span th:text="#{partner.common.keyword}"></span>
-	                           </label>
 	                           <select class="form-control" th:field="*{searchField}">
 	                                <option value="id">[[#{partner.common.id}]]</option>
 	                                <option value="nickname">[[#{partner.common.nickname}]]</option>
 	                            </select>
+	                            <label for="pageSize">
+	                               <i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+	                               <span th:text="#{partner.common.keyword}"></span>
+	                           </label>
 	                            <div class="input-group input-group-icon" style="width: 200px; display: inline-block;">
 	                                <span class="input-group-addon">
 	                                    <span class="icon"><i class="fa fa-search"></i></span>
@@ -80,7 +84,7 @@
 									<th th:text="#{partner.common.id}"> ID </th>
 									<th th:text="#{partner.common.nickname}"> Nickname </th>
 									<th th:text="#{partner.common.holdingAmount}"> Holding Amount </th>
-									<th th:text="#{partner.common.process}">Process</th>
+									<th style="min-width: 250px;" th:text="#{partner.common.process}">Process</th>
 									<th th:text="#{partner.member.payment}"> Payments </th>
 									<th th:text="#{partner.member.collect}"> Collect </th>
 									<th th:text="#{partner.member.payBack}"> pay-back </th>
@@ -101,7 +105,9 @@
 	                                   	<td th:text="${entity.partnerNickname}"></td>
 										<td th:text="${entity.partnerLevel}"></td>
 										<td >
-											<button class="member-detail" th:text="${entity.id}" th:data-key="${entity.seq}"></button>
+											<button class="btn btn-default member-detail" th:data-key="${entity.seq}">
+												<span th:text="${entity.id}" style="color: #0386c7;"></span>
+											</button>
 										</td>
 										<td th:text="${entity.nickname}"></td>
 										<td> 
