@@ -59,13 +59,13 @@
 	                       </div>
 	                   </form>
 	                   <div class="form-group" >
-	                       	<span style="float:right;"><b th:text="#{partner.store.lostAmount} + ' = ' + ${losingAmount}"></b></span>
+	                       	<span style="float:right;"><b th:text="#{partner.store.lostAmount} + ' = ' + ${losingAmount}" class="losingAmount" th:data-key="${losingAmount}"></b></span>
                        </div>
 	                   <div class="table-responsive">
 	                       <table class="table table-bordered table-striped distributor-list">
 	                           <thead>
 	                           <tr>
-		                            <th style="min-width: 50%;" th:text="#{partner.common.id}"> ID </th>
+	                           		<th th:text="#{partner.common.distributor} + #{partner.common.id}"> ID </th>
 									<th style="min-width: 50%;" th:text="#{partner.common.nickname}"> Nickname </th>
 									<th style="min-width: 50%;" th:text="#{partner.common.numberOfStores}"> Number of Stores </th>
 									<th style="min-width: 50%;" th:text="#{partner.common.member}"> Members </th>
@@ -87,7 +87,7 @@
 	                           <tbody>
 	                                <tr th:each="entity, stat : ${page.records}">
 		                                <input type="hidden" class="distributor-seq" th:data-key="${entity.seq}"/>
-		                                <td><a class="partner-distributor-detail" th:data-key="${entity.seq}" th:text="${entity.id}"></a></td>
+		                                <td th:text="${entity.id}"></td>
 										<td class="distributor-nickname" th:text="${entity.nickname}"></td>
 										<td><a class="distributor-storeCount" th:text="${#numbers.formatDecimal(entity.storeCount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></a></td>
 										<td><a class="distributor-memberCount" th:text="${entity.memberCount}"></a></td>

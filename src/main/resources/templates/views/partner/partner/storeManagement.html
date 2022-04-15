@@ -19,7 +19,7 @@
 	                <div class="panel-body">
 	                    <form class="form-inline search-form" th:action="@{/partner/storeManagement}" id="formSearch" method="get" th:object="${store}">
 	                        <div class="form-group">
-	                        	<a class="btn btn-default store-add-form" th:text="#{partner.store.storeRegistration}" style="background: linear-gradient(to bottom, white, #b6d6f5);">Store Registration</a>
+	                        	<a class="btn btn-default store-add-form" th:text="#{partner.store.storeRegistration}" style="background: linear-gradient(to bottom, white, #b6d6f5);"></a>
 	                        </div>
 	                        <div class="form-group">
 	                        	<label>
@@ -58,7 +58,7 @@
 	                       </div>
 	                   </form>
 	                   <div class="form-group" >
-	                       	<span style="float:right;" th:text="#{partner.store.losing.amount} + ' = '"><b>Losing Amount</b></span>
+	                       	<span style="float:right;"><b th:text="#{partner.store.lostAmount} + ' = ' + ${losingAmount}" class="losingAmount" th:data-key="${losingAmount}"></b></span>
                        </div>
 	                   <div class="table-responsive">
 	                       <table class="table table-bordered table-striped store-list">
@@ -105,7 +105,7 @@
 											<span th:class="${(entity.depositPayment - entity.withdrawalPayment) eq 0 ? '' : 'text-blue'}" th:text="${'(' + #numbers.formatDecimal((entity.depositPayment - entity.withdrawalPayment), 1, 'COMMA', 2, 'POINT').replace('.00', '') + ')'}"></span>
 										</td>
 										<td>
-											<button class="btn btn-sm btn-default progress-bet" style="min-width:50%; background-color: #5eb95e; color: white;" th:text="#{partner.common.store} + ' ' + #{partner.common.summary}">Store Summary</button>
+											<button class="btn btn-sm btn-default progress-bet" style="min-width:50%; background-color: #5eb95e; color: white;" th:text="#{partner.common.store} + ' ' + #{partner.common.summary}"></button>
 										</td>
 										<td>
 											<p class="bg-white-yellow" style="border-bottom: 1px solid #c1c1c1; text-align:center;">
