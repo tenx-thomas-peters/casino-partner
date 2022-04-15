@@ -68,7 +68,5 @@
 	<update id="readAll">
 		UPDATE note
 		SET read_status = 1
-		WHERE
-			receiver = #{receiverSeq}
 	</update>
 </mapper>
