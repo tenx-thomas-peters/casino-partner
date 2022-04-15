@@ -30,9 +30,11 @@ import com.casino.common.constant.CommonConstant;
 import com.casino.common.utils.UUIDGenerator;
 import com.casino.common.vo.Result;
 import com.casino.modules.partner.common.entity.Member;
+import com.casino.modules.partner.common.form.BettingSummaryForm;
 import com.casino.modules.partner.common.form.DistributorForm;
 import com.casino.modules.partner.common.form.MemberForm;
 import com.casino.modules.partner.common.form.StoreForm;
+import com.casino.modules.partner.service.IBettingSummaryService;
 import com.casino.modules.partner.service.IMemberService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,9 @@ public class PartnerController {
 	
 	@Autowired
 	private IMemberService memberService;
+	
+	@Autowired
+	private IBettingSummaryService bettingSummaryService;
 	
 	@GetMapping(value = "/distributorManagement")
 	public String distributorList(Model model, @ModelAttribute("distributor") DistributorForm distributor,
@@ -620,11 +625,41 @@ public class PartnerController {
 			model.addAttribute("Id", member.getId());
 			model.addAttribute("userType", member.getUserType());
 			model.addAttribute("storeList", storeList);
-			model.addAttribute("url", "partner/shopMember");
+			model.addAttribute("url", "/partner/shopMember");
 		}
 		catch(Exception e) {
 			log.error("url: /partner/shopMember --- method: getShopMember --- " + e.getMessage());
 		}
 		return "views/partner/common/storeModalList";
 	}
+
+	@RequestMapping(value = "popup_bet")
+    public String popupBet(@ModelAttribute("distributorSeq") String distributorSeq,
+    					   @ModelAttribute("bettingSummaryForm") BettingSummaryForm bettingSummaryForm,
+                           @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                           @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
+                           @RequestParam("fromProcessTime") String fromProcessTime,
+               			   @RequestParam("toProcessTime") String toProcessTime,
+               			   @RequestParam("losingAmount") Float losingAmount,
+                           Model model, HttpServletRequest request) {
+        try {
+            bettingSummaryForm = new BettingSummaryForm();
+            bettingSummaryForm.setMemberSeq(distributorSeq);
+            bettingSummaryForm.setFromProcessTime(fromProcessTime);
+            bettingSummaryForm.setToProcessTime(toProcessTime);
+
+            Page<BettingSummaryForm> page = new Page<>(pageNo, pageSize);
+            IPage<BettingSummaryForm> pageList = bettingSummaryService.getBettingSummaryList(page, bettingSummaryForm);
+
+            model.addAttribute("pageList", pageList);
+            model.addAttribute("pageNo", pageNo);
+            model.addAttribute("pageSize", pageSize);
+            model.addAttribute("memberSeq", distributorSeq);
+            model.addAttribute("losingAmount", losingAmount);
+            model.addAttribute("url", "/partner/popup_bet");
+        } catch (Exception e) {
+            log.error("url: /partner/popup_bet --- method: popupBet --- message: " + e.toString());
+        }
+        return "views/partner/common/storeSummary";
+    }
 }

@@ -87,11 +87,12 @@ public class NoteController {
     
     @PostMapping(value = "/batchDelete")
     @ResponseBody
-	public Result<Note> delete(@RequestParam(name = "ids") String ids, HttpServletRequest request) {
+	public Result<Note> delete(HttpServletRequest request) {
 		Result<Note> result = new Result<>();
-		List<String> idList = Arrays.asList(ids.split(","));
+		QueryWrapper<Note> qw = new QueryWrapper<Note>();
+		qw.eq("type", CommonConstant.TYPE_P_NOTE);
 		try {
-			if (noteService.removeByIds(idList)) {
+			if (noteService.remove(qw)) {
 				result.success("operation success");
 			} else {
 				result.error500("operation failed");
