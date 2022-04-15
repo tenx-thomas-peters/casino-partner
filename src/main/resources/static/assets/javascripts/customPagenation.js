@@ -20,7 +20,7 @@ function createPagenation(page, url) {
 		ulTag.append($("<li></li>").append('<a class="pagination_btn myFont" style="cursor:pointer" data-key="' + curPage + '" data-val="' + item + '">' + item + '</a>'));
 	});
 	dropDownTag.append(ulTag);
-	dropDownTag.append('<span>&nbsp;records per page</span>');
+	dropDownTag.append('<span>&nbsp;页</span>');
 	
 	
 	var pagenateTag = $("<div></div>").addClass("paginate");
@@ -42,8 +42,8 @@ function createPagenation(page, url) {
 		firstTag.attr('data-val', pageSize);
 	}
 	ulTag.append(firstTag).append(prevTag);
-	var liPgNoTag = $("<li></li>").append('<input type="text" class="goto myFont" value="' + curPage + '" id="PageIndexTxt">').stop().append('page');
-	ulTag.append('<li>all&nbsp;<span class="myFont" id="pageCnt" data-key="' + pageCnt + '">' + pageCnt + '</span>&nbsp;pages&nbsp;</li>');
+	var liPgNoTag = $("<li></li>").append('<input type="text" class="goto myFont" value="' + curPage + '" id="PageIndexTxt">').stop().append('条');
+	ulTag.append('<li>共&nbsp;<span class="myFont" id="pageCnt" data-key="' + pageCnt + '">' + pageCnt + '</span>&nbsp;页&nbsp;</li>');
 	ulTag.append(liPgNoTag);
 	
 	var nextTag = $('<li></li>').addClass('next').append('<i class="fa fa-caret-right"></i>');
@@ -69,7 +69,7 @@ function createPagenation(page, url) {
 	cContTag.append(ulTag).appendTo(pagenateTag);
 
 	var rContTag = $('<div></div>').addClass('r_cont');
-	rContTag.append('all <span class="red_num myFont">&nbsp;' + total + '&nbsp;</span>entries').appendTo(pagenateTag);
+	rContTag.append('共 <span class="red_num myFont">&nbsp;' + total + '&nbsp;</span>条').appendTo(pagenateTag);
 	
 	$(".tab_cont.customPage").append(dropDownTag).append(pagenateTag);
 }

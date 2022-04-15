@@ -16,10 +16,10 @@ $(document).ready(function(){
 	            	audio.src = CONTEXT_ROOT + "assets/audio/alarm.ogg";
 	            	audio.play();
 				}
-				$('#holdingMoney').html(res.holdingMoney + " won");
+				$('#holdingMoney').html(res.holdingMoney + " 韩元");
 				$('#sameDayFee').html(res.sameDayFee);
 				$('#feeCalculator').html(res.feeCalculator);
-				let singleLineNotice = "Notice: " + res.singleLineNotice; 
+				let singleLineNotice = "通知: " + res.singleLineNotice; 
 				$('#singleLineNotice').html(singleLineNotice);	
 			},
 			error: function(err) {

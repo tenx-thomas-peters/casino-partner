@@ -16,16 +16,17 @@ $(document).on('click', '.partner-distributor-detail', function (e) {
     }
 });
 
+let today = moment().format('YYYY-MM-DD');
+
 $(document).on('click', '.progress-bet', function (e) {
-    e.preventDefault();
-    let memberSeq = $(this).parents('tr').find('.distributor-seq').data('key');
-    let betWindow = window.open(CONTEXT_ROOT + 'member/popup_bet?mem_sn='+memberSeq, 'Betting Summary', 'width='+(screen.availWidth - 100)+', height=600');
+	e.preventDefault();
+	let distributorSeq = $(this).parents('tr').find('.distributor-seq').data('key');
+	let losingAmount = $('.losingAmount').data('key');
+	let betWindow = window.open(CONTEXT_ROOT + 'partner/popup_bet?distributorSeq=' + distributorSeq + '&fromProcessTime=' + today + '&toProcessTime=' + today + '&losingAmount=' + losingAmount, 'Store Summary', 'width='+(screen.availWidth - 100)+', height=600');
     betWindow.onbeforeunload = function () {
         window.location.reload();
     }
 });
-	
-let today = moment().format('YYYY-MM-DD');
 
 $(document).on('click', '.distributor-storeCount', function (e) {
     e.preventDefault();

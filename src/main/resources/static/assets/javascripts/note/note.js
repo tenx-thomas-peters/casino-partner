@@ -194,3 +194,37 @@ function readAll() {
 		}
 	})
 }
+
+function batchDelete() {
+	$.ajax({
+		url: CONTEXT_ROOT + "note/batchDelete",
+		type: "POST",
+		data: {},
+		success: function(response) {
+			new PNotify({
+	            title: 'Success!',
+	            text: response.message,
+	            type: 'success',
+	            buttons: {
+	                closer: true,
+	                sticker: false
+	            }
+	        });
+	
+	        setTimeout(function() {
+	            window.location.reload();
+	        }, 1000);
+		},
+		error: function(err) {
+			new PNotify({
+	            title: 'Error!',
+	            text: err.message,
+	            type: 'error',
+	            buttons: {
+	                closer: true,
+	                sticker: false
+	            }
+			});
+		}
+	});
+}
