@@ -64,18 +64,19 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
                                 <i class="fa fa-plus-square text-primary"></i>
-                                [[#{partner.common.accountHolder}]]
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="accountHolder" class="form-control"/>
-                            </div>
-                            <label class="col-sm-2 control-label">
-                                <i class="fa fa-plus-square text-primary"></i>
                                 [[#{partner.common.accountNumber}]]
                             </label>
                             <div class="col-sm-4">
                                 <input type="text" name="bankNumber" class="form-control" />
                             </div>
+                            <label class="col-sm-2 control-label">
+                                <i class="fa fa-plus-square text-primary"></i>
+                                [[#{partner.common.accountHolder}]]
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="accountHolder" class="form-control"/>
+                            </div>
+
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">
@@ -130,7 +131,6 @@
                 <footer class="panel-footer">
                     <button class="btn btn-default member-add" th:text="#{partner.common.registration}"
                     style="background: linear-gradient(to bottom, white, #b6d6f5);"></button>
-                    <button onclick="javascript: window.close();" class="btn btn-default" th:text="#{partner.common.close}"></button>
                 </footer>
             </section>
         </div>

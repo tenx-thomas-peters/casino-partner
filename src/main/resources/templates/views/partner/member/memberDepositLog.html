@@ -12,13 +12,17 @@
 
         <section role="main" class="content-body">
             <section class="panel" role="main">
-				<header class="panel-heading">
-					<h2 class="panel-title" th:text="#{partner.deposit.history}"></h2>
-				</header>
+				
 				<div class="panel-body">
+					<header class="panel-subTitle" style="padding:10px;">
+						<h2 class="panel-title">
+							<i style="font-size:15px;" class="fa fa-plus-square text-primary fav-icon"></i>
+							<span th:text="#{partner.deposit.history}" style="font-size:15px;"></span>
+						</h2>
+					</header>
 					<form id="formSearch" th:action="@{${url}}" 
 					th:object="${moneyHistory}" method="post" class="form-inline search-form"
-					style="background: linear-gradient(to bottom, white, #d8e4f1);">
+					style="margin:10px; background: linear-gradient(to bottom, white, #d8e4f1);">
 						<div class="form-group">
                             <label class="control-label">
                                 <i class="fa fa-search text-primary"></i>
@@ -58,7 +62,13 @@
 							</button>
 						</div>
 					</form>
-					<div class="table-responsive">
+					<div class="table-responsive" style="margin:10px;">
+						<label class="control-label">
+							<i class="fa fa-plus bg-primary" style="padding: 2px;"></i>
+							<span th:text="#{partner.deposit.totalDepositAmount}"></span>
+						</label>
+						<span>: </span>
+						<span th:text="${#numbers.formatDecimal(totalActualAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></span>
 						<table class="table table-bordered table-striped" id="moneylog-datatable">
 							<thead>
 								<tr>
@@ -75,14 +85,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="entity : ${page.records}" th:style="${'background:' + entity.member.color + ';'}" class="text-center">
+								<tr th:each="entity : ${page.records}" class="text-center">
 									<td th:text="${entity.member.distributor != null ? entity.member.distributor.id : ''}"></td>
 									<td th:text="${entity.member.distributor != null ? entity.member.distributor.nickname : ''}"></td>
 									<td th:text="${entity.member.distributor != null ? entity.member.distributor.level : ''}"></td>
 									<td th:text="${entity.member.id}"></td>
 									<td th:text="${entity.member.nickname}"></td>
 									<td th:text="${entity.member.accountHolder}"></td>
-									<td class="applicationAmount text-primary" th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+									<td class="applicationAmount" th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 									<td th:text="${#numbers.formatDecimal(entity.actualAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
 									<td th:text="${#dates.format(entity.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td th:if="${entity.status == 2}" th:text="#{partner.common.cancel}"></td>

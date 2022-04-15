@@ -13,21 +13,24 @@
 	
 	        <section role="main" class="content-body">
 	            <section class="panel">
-	                <header class="panel-heading">
-	                    <h2 class="panel-title" >
-		                    <span th:text="|#{partner.common.member}| + ' ' + |#{partner.common.list}|"></span>
-	                    	(
-	                        &nbsp;
-	                        <span th:if="${page.total}" th:text="${page.total}" style="color: red; display: inline-block; margin-bottom: 0;"></span>
-	                        <span th:if="${page.total == null}" style="color: red; display: inline-block; margin-bottom: 0;">0</span>
-	                        &nbsp;
-	                        <span th:text="#{partner.member.peopleInTotal}"></span>
-	                        &nbsp;
-	                        )
-                        </h2>
-	                </header>
 	                <div class="panel-body">
-	                    <form class="form-inline search-form" th:action="@{/member/list}" id="formSearch" method="get" th:object="${member}">
+	                    <header class="panel-subTitle" style="padding:10px;">
+        					<h2 class="panel-title">
+        						<i style="font-size:15px;" class="fa fa-plus-square text-primary fav-icon"></i>
+			                    <span th:text="|#{partner.common.member}| + ' ' + |#{partner.common.list}|" style="font-size: 15px;"></span>
+		                    	(
+		                    	<span th:text="#{partner.common.total}" style="font-size:15px;"></span>
+		                        &nbsp;
+		                        <span th:if="${page.total}" th:text="${page.total}" style="font-size:15px; color: red; display: inline-block; margin-bottom: 0;"></span>
+		                        <span th:if="${page.total == null}" style="font-size:15px; color: red; display: inline-block; margin-bottom: 0;">0</span>
+		                        &nbsp;
+		                        <span th:text="#{partner.member.peopleInTotal}" style="font-size:15px;"></span>
+		                        &nbsp;
+		                        )
+	                        </h2>
+        				</header>
+	                    <form class="form-inline search-form" th:action="@{/member/list}" id="formSearch" 
+	                    method="get" th:object="${member}" style="margin:10px; background: linear-gradient(to bottom, white, #d8e4f1);">
 	                        <div class="form-group">
 	                        	<a class="btn btn-default modal-member-add"
 	                        	 th:text="|#{partner.common.member}| + ' ' + |#{partner.common.registration}|"
@@ -74,7 +77,7 @@
 	                           </button>
 	                       </div>
 	                   </form>
-	                   <div class="table-responsive">
+	                   <div class="table-responsive" style="margin: 10px;">
 	                       <table class="table table-bordered table-striped store-list">
 	                           <thead>
 	                           	<tr>

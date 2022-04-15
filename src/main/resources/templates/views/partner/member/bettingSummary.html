@@ -20,27 +20,23 @@
                         <input type="hidden" name="mem_sn" th:value="${memberSeq}" />
                     </form>
                     <div class="table-responsive">
-                        <table class="table betting-popup" id="betting-list">
+                        <table class="table table-bordered table-striped store-list" id="betting-list">
                             <thead>
                             <tr>
+                            	<th th:text="#{partner.bettingSummary.checkTime}"></th>
                             	<th th:text="#{partner.common.id}"></th>
-                                <th th:text="#{partner.bettingSummary.checkTime}"></th>
-                                <!-- <th th:text="#{partner.common.id}"></th> -->
-                                <!-- <th th:text="#{partner.common.nickname}"></th> -->
-                                <!-- <th th:text="#{partner.bettingSummary.playingGame}"></th> -->
+                                <th th:text="#{partner.common.nickname}"></th>
+                                <th th:text="#{partner.bettingSummary.playingGame}"></th>
                                 <th th:text="#{partner.common.type}"></th>
-                                <!-- <th th:text="#{partner.common.betAmount}"></th> -->
+                                <th th:text="#{partner.common.betAmount}"></th>
                                 <th th:text="#{partner.bettingSummary.winningAmount}"></th>
                                 <th th:text="#{partner.bettingSummary.numberOfBets}"></th>
                                 <th th:text="#{partner.bettingSummary.pointsRate}"></th>
-                                <!-- <th th:text="#{partner.common.store.id}"></th> -->
-                                <!-- <th th:text="#{partner.bettingSummary.storeSettlementRate}"></th> -->
+                                <th th:text="#{partner.common.store.id}"></th>
+                                <th th:text="#{partner.bettingSummary.storeSettlementRate}"></th>
                                 <th th:text="#{partner.bettingSummary.amountOfStoreRolling}"></th>
-                                <!-- <th th:text="#{partner.common.distributor.id}"></th> -->
-                                <!-- <th th:text="#{partner.bettingSummary.distributorSettlementRate}"></th> -->
-                                <th th:text="#{partner.bettingSummary.amountOfDistributorRolling}"></th>
-                                <!-- <th th:text="#{partner.common.subHeadquarter.id}"></th> -->
-                                <!-- <th th:text="#{partner.bettingSummary.subHeadquarterSettlementRate}"></th> -->
+                                <th th:text="#{partner.common.distributor.id}"></th>
+                                <th th:text="#{partner.bettingSummary.distributorSettlementRate}"></th>
                                 <th th:text="#{partner.bettingSummary.amountOfSubHeadquarterRolling}"></th>
                             </tr>
                             </thead>
