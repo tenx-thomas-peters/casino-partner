@@ -32,13 +32,7 @@
 									<div class="table-responsive">
 										<table class="table table-bordered table-striped text-center">
 											<thead>
-												<tr>
-													<th>
-														<div class="checkbox-custom checkbox-default checkbox-inline">
-					                                        <input type="checkbox" class="group-checkable" id="allCheck"
-					                                        	data-set="#member-datatable .checkboxes" onclick="allCheck()"><label></label>
-					                                    </div>
-													</th>									
+												<tr>						
 													<th th:text="#{partner.common.sender}"> Sender </th>
 													<th th:text="#{partner.common.title}"> Title </th>
 													<th th:text="#{partner.common.date}"> Date </th>
@@ -47,11 +41,6 @@
 											</thead>
 											<tbody>
 												<tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
-													<td>
-														<div class="checkbox-custom checkbox-default checkbox-inline">
-															<input class="checkboxes" type="checkbox" th:name="${entity.seq}"><label></label>
-														</div>
-					                                </td>
 													<td th:text="${entity.sender}"></td>
 													<td>
 														<a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
@@ -71,7 +60,7 @@
 									<div class="row">
 										<div class="text-center" style="float: right;">
 											<button id="readAll" class="btn btn-primary" data-toggle="modal" href="#readAllModal" th:text="#{partner.common.readAll}"><span></span></button>
-											<a th:href="@{/partner2/popup_memoadd}" class="btn btn-default" th:text="#{partner.common.quickAccout}"></a>
+											<a class="btn btn-default" th:text="#{partner.common.quickAccout}"></a>
 											<a id="delete" class="btn btn-primary" data-toggle="modal" href="#deleteModal" th:text="#{partner.common.deleteAll}"></a>
 										</div>									
 									</div>
