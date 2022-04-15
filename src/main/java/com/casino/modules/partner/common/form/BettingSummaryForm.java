@@ -25,8 +25,12 @@ public class BettingSummaryForm {
     private Integer type;
     private Float bettingAmount;
     private Float winningAmount;
+    private Float lostAmount;
+    private Float batRolling;
     private Integer betCount;
     private Float pointRate;
+    private Float slotRate;
+    private Float baccaratRate;
 
     private String storeSeq;
     private String storeID;
