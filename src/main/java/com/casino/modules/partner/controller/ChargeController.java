@@ -113,8 +113,8 @@ public class ChargeController {
 			Note note = new Note();
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
 			note.setSeq(UUIDGenerator.generate());
-	    	note.setReceiver(loginUser.getSeq());
-	    	note.setTitle("account Inquiry");
+	    	note.setSender(loginUser.getSeq());
+	    	note.setTitle("빠른계좌요청");
 	    	note.setType(CommonConstant.TYPE_NOTE);
 	    	note.setClassification(CommonConstant.CLASSIFICATION_CUSTOMERSERVICE);
 	    	if (noteService.save(note)) {
