@@ -19,53 +19,17 @@
 	                   	<div class="tabs tabs-primary">
 							<ul class="nav nav-tabs">
 								<li>
-									<a href="#inbox" data-toggle="tab" th:text="#{partner.common.inbox}"></a>								</li>
+									<a th:href="@{/note/receivedInbox}" th:text="#{partner.common.inbox}"></a>
+								</li>
 								<li class="active">
-									<a th:href="@{/note/inquiry}"  th:text="#{partner.common.SentInbox}"></a>
+									<a href="#sentInbox"  th:text="#{partner.common.SentInbox}"></a>
 								</li>
 								<li>
 									<a href="#memoAdd" data-toggle="tab"  th:text="#{partner.common.writeNote}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
-								<div id="inbox" class="tab-pane">
-									<div class="table-responsive">
-										<table class="table table-bordered table-striped text-center">
-											<thead>
-												<tr>						
-													<th th:text="#{partner.common.sender}"> Sender </th>
-													<th th:text="#{partner.common.title}"> Title </th>
-													<th th:text="#{partner.common.date}"> Date </th>
-													<th th:text="#{partner.common.status}"> Status </th>											
-												</tr>
-											</thead>
-											<tbody>
-												<tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
-													<td th:text="${entity.sender}"></td>
-													<td>
-														<a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
-													</td>
-													<td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd') : '')}"></td>
-													<td>
-														<span th:if="${entity.readStatus == 0}" th:text="#{partner.status.unread}"></span>
-														<span th:if="${entity.readStatus == 1}" th:text="#{partner.common.read}"></span>
-													</td>
-												</tr>
-												<tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
-					                                <td colspan="10" th:text="#{partner.common.noData}"></td>
-					                            </tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="row">
-										<div class="text-center" style="float: right;">
-											<button id="readAll" class="btn btn-primary" data-toggle="modal" href="#readAllModal" th:text="#{partner.common.readAll}"><span></span></button>
-											<a class="btn btn-default" th:text="#{partner.common.quickAccout}"></a>
-											<a id="delete" class="btn btn-primary" data-toggle="modal" href="#deleteModal" th:text="#{partner.common.deleteAll}"></a>
-										</div>									
-									</div>
-									<div class="tab_cont customPage w99 t_center ptb15"></div>
-								</div>
+
 								<div id="readAllModal" class="modal fade" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
 									<div class="modal-dialog modal-dialog-centered">
 										<div class="modal-content">

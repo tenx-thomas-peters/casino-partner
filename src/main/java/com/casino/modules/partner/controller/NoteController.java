@@ -47,15 +47,15 @@ public class NoteController {
     private IMemberService memberService;
 
     
-    @GetMapping(value = "inquiry")
-    public String pNoteList(@ModelAttribute("form") NoteForm form,
+    @GetMapping(value = "receivedInbox")
+    public String pNoteInboxList(@ModelAttribute("form") NoteForm form,
     		@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request,
 			Model model) {
         try {
         	Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-        	form.setType(CommonConstant.TYPE_P_NOTE);
+        	form.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
         	IPage<Note> pageList = noteService.getSendList(page, form);
 			
 			model.addAttribute("pageList", pageList);
@@ -63,18 +63,41 @@ public class NoteController {
             model.addAttribute("form", form);
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("pageSize", pageSize);
-            model.addAttribute("url", "note/inquiry");
+            model.addAttribute("url", "note/receivedInbox");
         } catch (Exception e) {
-            log.error("url: /note/inquiry --- method: inquiry --- error: " + e.toString());
+            log.error("url: /note/receivedInbox --- method: inquiry --- error: " + e.toString());
         }
-        return "views/partner/note/inquiry";
+        return "views/partner/note/receivedInbox";
     }
+
+	@GetMapping(value = "inquiry")
+	public String pNoteList(@ModelAttribute("form") NoteForm form,
+							@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+							@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request,
+							Model model) {
+		try {
+			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+			Page<Note> page = new Page<Note>(pageNo, pageSize);
+			form.setType(CommonConstant.TYPE_P_NOTE);
+			IPage<Note> pageList = noteService.getSendList(page, form);
+
+			model.addAttribute("pageList", pageList);
+			model.addAttribute("page", pageList);
+			model.addAttribute("form", form);
+			model.addAttribute("pageNo", pageNo);
+			model.addAttribute("pageSize", pageSize);
+			model.addAttribute("url", "note/inquiry");
+		} catch (Exception e) {
+			log.error("url: /note/inquiry --- method: inquiry --- error: " + e.toString());
+		}
+		return "views/partner/note/inquiry";
+	}
     
     
 	@GetMapping(value = "/popup_memoadd")
     public String popupMemoAdd(Model model) {
     	try {
-    		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     		Date date = new Date();
     		String today = sdf.format(date);
     		model.addAttribute("url", "note/inquiry");

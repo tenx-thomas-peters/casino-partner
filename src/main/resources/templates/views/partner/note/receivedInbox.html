@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.note.inquiry})"></head>
+
+<body>
+<section class="body">
+    <div class="inner-wrapper">
+
+        <section role="main" class="content-body">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h2 class="panel-title">
+                        <span th:text="#{partner.common.SentInbox}"></span>
+                    </h2>
+                </header>
+                <div class="panel-body">
+                    <div class="tabs tabs-primary">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#receivedInbox" th:text="#{partner.common.inbox}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/note/inquiry}" th:text="#{partner.common.SentInbox}"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/note/inquiry}"  th:text="#{partner.common.writeNote}"></a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <div id="receivedInbox" class="tab-pane active">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped text-center">
+                                        <thead>
+                                        <tr>
+                                            <th th:text="#{partner.common.recipient}"></th>
+                                            <th th:text="#{partner.common.title}"></th>
+                                            <th th:text="#{partner.common.date}"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                                            <td th:text="${entity.mId}"></td>
+                                            <td>
+                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
+                                            </td>
+                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd HH:MM:SS') : '')}"></td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
+                                            <td colspan="10" th:text="#{partner.common.noData}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab_cont customPage w99 t_center ptb15"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var page = [[${page}]];
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script th:src="@{/assets/javascripts/page.js}"></script>
+<script th:src="@{/assets/javascripts/note/note.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    createPagenation(page, url);
+</script>
+
+</body>
+</html>

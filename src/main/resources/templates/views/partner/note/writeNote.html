@@ -1,0 +1,182 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template :: head (#{partner.note.inquiry})"></head>
+
+<body>
+<section class="body">
+    <div class="inner-wrapper">
+
+        <section role="main" class="content-body">
+            <section class="panel">
+                <header class="panel-heading">
+                    <h2 class="panel-title">
+                        <span th:text="#{partner.common.SentInbox}"></span>
+                    </h2>
+                </header>
+                <div class="panel-body">
+                    <div class="tabs tabs-primary">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a th:href="@{/note/receivedInbox}" th:text="#{partner.common.inbox}"></a>
+                            </li>
+                            <li class="active">
+                                <a href="#sentInbox"  th:text="#{partner.common.SentInbox}"></a>
+                            </li>
+                            <li>
+                                <a href="#memoAdd" data-toggle="tab"  th:text="#{partner.common.writeNote}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div id="readAllModal" class="modal fade" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" th:text="#{partner.common.readAll}"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div id="message" class="row">
+                                                    <div class="input-item-div col-xs-12 message">
+                                                        <span th:text="#{partner.common.readAll.msg}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer text-center">
+                                            <button class="btn btn-primary modal-dismiss" type="button" onclick="readAll()">
+                                                <span class="d-table-cell align-middle" th:text="#{partner.common.confirm}"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                <span class="d-table-cell align-middle" th:text="#{partner.common.cancel}"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="deleteModal" class="modal fade" data-backdrop="static" tabindex="-1" role="basic" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" th:text="#{partner.common.delete}"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div id="message" class="row">
+                                                    <div class="input-item-div col-xs-12 message">
+                                                        <span th:text="#{partner.common.deleteMsg}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer text-center">
+                                            <button class="btn btn-primary modal-dismiss" type="button" onclick="batchDelete();">
+                                                <span class="d-table-cell align-middle" th:text="#{partner.common.confirm}"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                <span class="d-table-cell align-middle" th:text="#{partner.common.cancel}"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="sentInbox" class="tab-pane active">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped text-center">
+                                        <thead>
+                                        <tr>
+                                            <th th:text="#{partner.common.recipient}"></th>
+                                            <th th:text="#{partner.common.title}"></th>
+                                            <th th:text="#{partner.common.date}"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                                            <td th:text="${entity.mId}"></td>
+                                            <td>
+                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
+                                            </td>
+                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd HH:MM:SS') : '')}"></td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
+                                            <td colspan="10" th:text="#{partner.common.noData}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab_cont customPage w99 t_center ptb15"></div>
+                            </div>
+                            <div id="memoAdd" class="tab-pane">
+                                <form method="post" th:action="@{/note/inquiry}" th:object="${note}" id="pNoteForm">
+                                    <div class="form-group">
+                                        <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                            <i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.title}"></span>:
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="title" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                            <i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.recipient}"></span>:
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <select data-plugin-selectTwo class="form-control populate" name="userType" required>
+                                                <option value="" th:text="#{partner.partner.partnerSelection}"></option>
+                                                <option value="1" th:text="#{partner.common.store}"></option>
+                                                <option value="2" th:text="#{partner.common.distributor}"></option>
+                                                <option value="3" th:text="#{partner.common.subHeadquarter}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                            <i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.date}"></span>:
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="text" data-plugin-datepicker class="form-control" name="sendTime" th:value="${today}"
+                                                   data-date-format= "yyyy-mm-dd" required/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
+                                            <i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.contents}"></span>:
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <textarea name="content" rows="5" class="form-control" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-11 text-center">
+                                            <button class="btn btn-primary memo-add" ><span th:text="#{partner.common.toTheShipping}"></span></button>
+                                            <a th:href="@{/note/inquiry}" class="btn btn-default" th:text="#{partner.common.list}"></a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="javascript">
+    var page = [[${page}]];
+    var url = [[${url}]];
+</script>
+
+<script th:replace="template :: scripts"></script>
+
+<script th:src="@{/assets/javascripts/page.js}"></script>
+<script th:src="@{/assets/javascripts/note/note.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    createPagenation(page, url);
+</script>
+
+</body>
+</html>

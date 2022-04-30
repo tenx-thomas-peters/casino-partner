@@ -45,6 +45,7 @@ public interface CommonConstant {
 	public static final Integer TYPE_NOTE = 0;
 	public static final Integer TYPE_P_NOTE = 1;
 	public static final Integer TYPE_POST = 2;
+	public static final Integer TYPE_P_RECEIVE_NOTE = 3;
 	
 	// classification
 	public static final Integer CLASSIFICATION_NOTICE = 0;
