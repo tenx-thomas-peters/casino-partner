@@ -16,9 +16,13 @@ public class NoteForm {
 	private String sendTimeTo;
 	
 	private String site;
-	
+
+	private String sender;
+
 	private Integer type;
-	
+
+	private Integer sendType;
+
 	private String levelType;
 	
 }

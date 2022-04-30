@@ -118,6 +118,7 @@ public class ChargeController {
 	    	note.setTitle("빠른계좌요청");
 	    	note.setContent("빠른 계좌를 요청합니다");
 	    	note.setType(CommonConstant.TYPE_P_NOTE);
+	    	note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
 	    	if (noteService.save(note)) {
 	    		result.success("success");
 	    	} else {

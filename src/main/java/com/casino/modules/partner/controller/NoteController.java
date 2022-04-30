@@ -64,11 +64,11 @@ public class NoteController {
 			Model model) {
         try {
         	Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
-			System.out.println("loginUser");
-			System.out.println(loginUser);
-			System.out.println(loginUser.getSeq());
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-        	IPage<Note> pageList = noteService.getReceivedList(page, loginUser.getSeq());
+			form.setType(CommonConstant.TYPE_P_NOTE);
+			form.setSendType(CommonConstant.TYPE_SEND_NOTE);
+			form.setSender(loginUser.getSeq());
+        	IPage<Note> pageList = noteService.getNoteList(page, form);
 			System.out.println("pageList");
 			System.out.println(pageList);
 			model.addAttribute("pageList", pageList);
@@ -92,8 +92,9 @@ public class NoteController {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
 			form.setType(CommonConstant.TYPE_P_NOTE);
-			form.setType(CommonConstant.TYPE_P_NOTE);
-			IPage<Note> pageList = noteService.getSendList(page, loginUser.getSeq());
+			form.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
+			form.setSender(loginUser.getSeq());
+			IPage<Note> pageList = noteService.getNoteList(page, form);
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
@@ -201,6 +202,7 @@ public class NoteController {
 				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
 				note.setLookUp(0);
 				note.setType(CommonConstant.TYPE_P_NOTE);
+				note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
 				if(noteService.save(note)) {
 					result.success("Operate Success");
 				} else {
