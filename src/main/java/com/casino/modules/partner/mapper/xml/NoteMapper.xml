@@ -28,6 +28,16 @@
 		</where>
 		ORDER BY n.send_time DESC
 	</select>
+
+	<select id="getReceivedList" resultType="com.casino.modules.partner.common.entity.Note">
+		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
+		FROM note n
+		LEFT JOIN member m ON m.seq = n.receiver
+		WHERE n.type = 3
+		AND n.receiver = #{receiver}
+		ORDER BY n.send_time DESC
+	</select>
+
 	<select id="getNoteContentBySeq" resultType="java.lang.Boolean">
 		SELECT n.seq as seq, n.title as title, n.content as content
 		FROM note n

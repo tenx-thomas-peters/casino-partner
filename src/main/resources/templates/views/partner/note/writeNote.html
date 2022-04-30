@@ -21,11 +21,11 @@
                             <li>
                                 <a th:href="@{/note/receivedInbox}" th:text="#{partner.common.inbox}"></a>
                             </li>
-                            <li class="active">
-                                <a href="#sentInbox"  th:text="#{partner.common.SentInbox}"></a>
-                            </li>
                             <li>
-                                <a href="#memoAdd" data-toggle="tab"  th:text="#{partner.common.writeNote}"></a>
+                                <a th:href="@{/note/inquiry}" th:text="#{partner.common.SentInbox}"></a>
+                            </li>
+                            <li class="active">
+                                <a href="#memoAdd"  th:text="#{partner.common.writeNote}"></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -82,33 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="sentInbox" class="tab-pane active">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped text-center">
-                                        <thead>
-                                        <tr>
-                                            <th th:text="#{partner.common.recipient}"></th>
-                                            <th th:text="#{partner.common.title}"></th>
-                                            <th th:text="#{partner.common.date}"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
-                                            <td th:text="${entity.mId}"></td>
-                                            <td>
-                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
-                                            </td>
-                                            <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd HH:MM:SS') : '')}"></td>
-                                        </tr>
-                                        <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
-                                            <td colspan="10" th:text="#{partner.common.noData}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tab_cont customPage w99 t_center ptb15"></div>
-                            </div>
-                            <div id="memoAdd" class="tab-pane">
+                            <div id="memoAdd"  class="tab-pane active">
                                 <form method="post" th:action="@{/note/inquiry}" th:object="${note}" id="pNoteForm">
                                     <div class="form-group">
                                         <div class="demo-icon-hover mb-sm mt-sm col-sm-2">
@@ -165,7 +139,6 @@
 </section>
 
 <script type="text/javascript" th:inline="javascript">
-    var page = [[${page}]];
     var url = [[${url}]];
 </script>
 
@@ -173,10 +146,6 @@
 
 <script th:src="@{/assets/javascripts/page.js}"></script>
 <script th:src="@{/assets/javascripts/note/note.js}"></script>
-
-<script type="text/javascript" th:inline="javascript">
-    createPagenation(page, url);
-</script>
 
 </body>
 </html>

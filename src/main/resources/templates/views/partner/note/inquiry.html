@@ -25,7 +25,7 @@
 									<a href="#sentInbox"  th:text="#{partner.common.SentInbox}"></a>
 								</li>
 								<li>
-									<a href="#memoAdd" data-toggle="tab"  th:text="#{partner.common.writeNote}"></a>
+									<a th:href="@{/note/writeNote}"  th:text="#{partner.common.writeNote}"></a>
 								</li>
 							</ul>
 							<div class="tab-content">
@@ -107,54 +107,6 @@
 										</table>
 									</div>
 									<div class="tab_cont customPage w99 t_center ptb15"></div>
-								</div>
-								<div id="memoAdd" class="tab-pane">
-									<form method="post" th:action="@{/note/inquiry}" th:object="${note}" id="pNoteForm">
-										<div class="form-group">
-											<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-												<i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.title}"></span>:
-											</div>
-											<div class="col-sm-8">
-												<input type="text" name="title" class="form-control" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-												<i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.recipient}"></span>:
-											</div>
-											<div class="col-sm-8">
-												<select data-plugin-selectTwo class="form-control populate" name="userType" required>
-													<option value="" th:text="#{partner.partner.partnerSelection}"></option>
-													<option value="1" th:text="#{partner.common.store}"></option>
-													<option value="2" th:text="#{partner.common.distributor}"></option>
-													<option value="3" th:text="#{partner.common.subHeadquarter}"></option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-												<i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.date}"></span>:
-											</div>
-											<div class="col-sm-8">
-												<input type="text" data-plugin-datepicker class="form-control" name="sendTime" th:value="${today}"
-													data-date-format= "yyyy-mm-dd" required/>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="demo-icon-hover mb-sm mt-sm col-sm-2">
-												<i class="fa fa-plus-square text-primary"></i> <span th:text="#{partner.common.contents}"></span>:
-											</div>
-											<div class="col-sm-8">
-												<textarea name="content" rows="5" class="form-control" required></textarea>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-sm-11 text-center">
-												<button class="btn btn-primary memo-add" ><span th:text="#{partner.common.toTheShipping}"></span></button>
-												<a th:href="@{/note/inquiry}" class="btn btn-default" th:text="#{partner.common.list}"></a>
-											</div>
-										</div>
-									</form>
 								</div>
 							</div>
 						</div>

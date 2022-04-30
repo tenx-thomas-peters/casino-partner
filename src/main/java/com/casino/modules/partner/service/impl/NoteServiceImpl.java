@@ -41,6 +41,11 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note> implements IN
 	}
 
 	@Override
+	public IPage<Note> getReceivedList(Page<Note> page, String receiver) {
+		return noteMapper.getReceivedList(page, receiver);
+	}
+
+	@Override
 	public boolean getNoteContentBySeq(String seq) {
 		return noteMapper.getNoteContentBySeq(seq);
 	}

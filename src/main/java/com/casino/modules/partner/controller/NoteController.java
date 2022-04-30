@@ -46,6 +46,16 @@ public class NoteController {
     @Autowired
     private IMemberService memberService;
 
+	@GetMapping(value = "writeNote")
+	public String writeNote(Model model) {
+		try {
+			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+			model.addAttribute("url", "note/writeNote");
+		} catch (Exception e) {
+			log.error("url: /note/writeNote --- method: inquiry --- error: " + e.toString());
+		}
+		return "views/partner/note/writeNote";
+	}
     
     @GetMapping(value = "receivedInbox")
     public String pNoteInboxList(@ModelAttribute("form") NoteForm form,
@@ -54,10 +64,13 @@ public class NoteController {
 			Model model) {
         try {
         	Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+			System.out.println("loginUser");
+			System.out.println(loginUser);
+			System.out.println(loginUser.getSeq());
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-        	form.setType(CommonConstant.TYPE_P_RECEIVE_NOTE);
-        	IPage<Note> pageList = noteService.getSendList(page, form);
-			
+        	IPage<Note> pageList = noteService.getReceivedList(page, loginUser.getSeq());
+			System.out.println("pageList");
+			System.out.println(pageList);
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
             model.addAttribute("form", form);
