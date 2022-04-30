@@ -18,7 +18,7 @@ public interface NoteMapper extends BaseMapper<Note> {
 			@Param("pageSize") Integer pageSize, 
 			@Param("note") Note note);
 
-	IPage<Note> getSendList(Page<Note> page, @Param("form") NoteForm form,
+	IPage<Note> getSendList(Page<Note> page, @Param("sender") String sender,
 			@Param("selectType1") Integer selectType1,
 			@Param("selectType2") Integer selectType2,
 			@Param("selectType3") Integer selectType3);
