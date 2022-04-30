@@ -191,30 +191,21 @@ public class NoteController {
 	@ResponseBody
     public Result<Note> memoadd(@ModelAttribute("note") Note note) {
 		Result<Note> result = new Result<>();
+		Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
     	try {
     		if(note != null) {
-    			note.setSeq(UUIDGenerator.generate());
-    			QueryWrapper<Member> qw = new QueryWrapper<>();
-    			qw.eq("user_type", note.getUserType());
-    			List<Member> members = memberService.list(qw);
-    			if(members.size() > 0) {
-    				List<Note> noteList = new ArrayList<>();
-    				for(int i = 0; i < members.size(); i ++) {
-    					note.setReceiver(members.get(i).getSeq());
-    					note.setReadStatus(CommonConstant.STATUS_UN_READ);
-    					note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
-    					note.setLookUp(0);
-    					note.setType(CommonConstant.TYPE_P_NOTE);
-    					noteList.add(note);
-    				}
-    				if(noteService.saveBatch(noteList)) {
-    					result.success("Operate Success");
-    				} else {
-    					result.error500("Operate Faild");
-    				}
-    			} else {
-    				result.error500("No Members");
-    			}
+				note.setSeq(UUIDGenerator.generate());
+				note.setReceiver(note.getReceiver());
+				note.setSender(loginUser.getSeq());
+				note.setReadStatus(CommonConstant.STATUS_UN_READ);
+				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
+				note.setLookUp(0);
+				note.setType(CommonConstant.TYPE_P_NOTE);
+				if(noteService.save(note)) {
+					result.success("Operate Success");
+				} else {
+					result.error500("Operate Faild");
+				}
     		} else {
     			result.error500("Operate Faild");
     		}

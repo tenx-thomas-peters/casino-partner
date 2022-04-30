@@ -94,7 +94,7 @@
 											</thead>
 											<tbody>
 												<tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
-													<td th:text="${entity.mId}"></td>
+													<td th:text="${entity.receiver}"></td>
 													<td>
 														<a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
 													</td>
