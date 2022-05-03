@@ -76,9 +76,11 @@
 		    				<span id="casinoRate" class="badge bg-info"></span>
 		    			</li>
 		    			<li>
-		    				<i class="fa fa-envelope-o"></i>
-		    				<span th:text="#{partner.common.note}"></span>
-		    				<span class="badge bg-danger" id="noteCnt"></span>
+							<a href="javascript: window.open(CONTEXT_ROOT + 'note/receivedInbox', 'inquiry', 'width=1200,height=700')" >
+								<i class="fa fa-envelope-o"></i>
+								<span th:text="#{partner.common.note}"></span>
+								<span class="badge bg-danger" id="noteCnt"></span>
+							</a>
 		    			</li>
 		    			<li>
 		    				<i class="fa fa-won"></i>
