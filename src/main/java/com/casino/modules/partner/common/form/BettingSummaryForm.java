@@ -23,11 +23,15 @@ public class BettingSummaryForm {
     private Float memberBaccaratRate;
     private String playingGame;
     private Integer type;
-    private Float bettingAmount;
-    private Float winningAmount;
-    private Float lostAmount;
+    private Float slotBettingAmount;
+    private Float baccaratBettingAmount;
+    private Float slotWinningAmount;
+    private Float baccaratWinningAmount;
+    private Float slotLostAmount;
+    private Float baccaratLostAmount;
     private Float batRolling;
-    private Integer betCount;
+    private Integer slotBetCount;
+    private Integer baccaratBetCount;
     private Float pointRate;
     private Float slotRate;
     private Float baccaratRate;
@@ -36,19 +40,22 @@ public class BettingSummaryForm {
     private String storeID;
     private Float storeSlotRate;
     private Float storeBaccaratRate;
-    private Float storeRollingAmount;
+    private Float slotStoreRollingAmount;
+    private Float baccaratStoreRollingAmount;
 
     private String distributorSeq;
     private String distributorID;
     private Float distributorSlotRate;
     private Float distributorBaccaratRate;
-    private Float distributorRollingAmount;
+    private Float slotDistributorRollingAmount;
+    private Float baccaratDistributorRollingAmount;
 
     private String subHeadquarterSeq;
     private String subHeadquarterID;
     private Float subHeadquarterSlotRate;
     private Float subHeadquarterBaccaratRate;
-    private Float subHeadquarterRollingAmount;
+    private Float slotHeadquarterRollingAmount;
+    private Float baccaratHeadquarterRollingAmount;
 
     private String searchField;
     private String searchValue;
