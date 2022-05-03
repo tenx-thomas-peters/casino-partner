@@ -44,12 +44,15 @@ public class StoreForm {
 	private Float withdrawalMemberAmount;
 	
 	private Float withdrawalPartnerAmount;
-	
-	private Float betAmount;
-	
-	private Float winningAmount;
-	
-	private Float lostAmount;
+
+	private Float slotBettingAmount;
+	private Float baccaratBettingAmount;
+
+	private Float slotWinningAmount;
+	private Float baccaratWinningAmount;
+
+	private Float slotLostAmount;
+	private Float baccaratLostAmount;
 	
 	private Float batRolling;
 	

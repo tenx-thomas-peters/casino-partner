@@ -102,15 +102,15 @@ public class PartnerController {
 			
 			for (DistributorForm item : pageList.getRecords()) {
 				if(item.getGameType() != null) {
-						slotBetAmountSum += item.getSlotBettingAmount();
-						slotWinningAmountSum += item.getSlotWinningAmount();
-						slotLostAmountSum += item.getSlotLostAmount();
-						slotBatRollingSum += item.getBatRolling();
+					slotBetAmountSum += item.getSlotBettingAmount();
+					slotWinningAmountSum += item.getSlotWinningAmount();
+					slotLostAmountSum += item.getSlotLostAmount();
+					slotBatRollingSum += item.getBatRolling();
 
-						baccaratBetAmountSum += item.getBaccaratBettingAmount();
-						baccaratWinningAmountSum += item.getBaccaratWinningAmount();
-						baccaratLostAmountSum += item.getBaccaratLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
+					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+					baccaratLostAmountSum += item.getBaccaratLostAmount();
+					baccaratBatRollingSum += item.getBatRolling();
 				}
 			}
 			
@@ -250,17 +250,15 @@ public class PartnerController {
 			
 			for (StoreForm item : pageList.getRecords()) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
-						slotBatRollingSum += item.getBatRolling();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
-					}
+					slotBetAmountSum += item.getSlotBettingAmount();
+					slotWinningAmountSum += item.getSlotWinningAmount();
+					slotLostAmountSum += item.getSlotLostAmount();
+					slotBatRollingSum += item.getBatRolling();
+
+					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+					baccaratLostAmountSum += item.getBaccaratLostAmount();
+					baccaratBatRollingSum += item.getBatRolling();
 				}
 			}
 			
@@ -302,7 +300,8 @@ public class PartnerController {
 			model.addAttribute("store", store);
 			model.addAttribute("url", "/partner/storeManagement");
 		} catch (Exception e) {
-			log.error("url: /partner/storeManagement --- method: storeList --- error: " + e.toString());
+//			log.error("url: /partner/storeManagement --- method: storeList --- error: " + e.toString());
+			e.printStackTrace();
 		}
 
 		return "views/partner/partner/storeManagement";
@@ -585,17 +584,15 @@ public class PartnerController {
 			
 			for (StoreForm item : storeList) {
 				if(item.getGameType() != null) {
-					if (item.getGameType().equals(0)) {
-						slotBetAmountSum += item.getBetAmount();
-						slotWinningAmountSum += item.getWinningAmount();
-						slotLostAmountSum += item.getLostAmount();
+						slotBetAmountSum += item.getSlotBettingAmount();
+						slotWinningAmountSum += item.getSlotWinningAmount();
+						slotLostAmountSum += item.getSlotLostAmount();
 						slotBatRollingSum += item.getBatRolling();
-					} else {
-						baccaratBetAmountSum += item.getBetAmount();
-						baccaratWinningAmountSum += item.getWinningAmount();
-						baccaratLostAmountSum += item.getLostAmount();
+
+						baccaratBetAmountSum += item.getBaccaratBettingAmount();
+						baccaratWinningAmountSum += item.getBaccaratWinningAmount();
+						baccaratLostAmountSum += item.getBaccaratLostAmount();
 						baccaratBatRollingSum += item.getBatRolling();
-					}
 				}
 			}
 			
@@ -655,6 +652,7 @@ public class PartnerController {
             model.addAttribute("url", "/partner/popup_bet");
         } catch (Exception e) {
             log.error("url: /partner/popup_bet --- method: popupBet --- message: " + e.toString());
+			e.printStackTrace();
         }
         return "views/partner/common/storeSummary";
     }
