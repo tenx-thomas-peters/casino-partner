@@ -68,7 +68,6 @@ public class NoteController {
 			form.setType(CommonConstant.TYPE_P_NOTE);
 			form.setSendType(CommonConstant.TYPE_SEND_NOTE);
 			form.setSender(loginUser.getSeq());
-			noteService.changeReadStatusAll();
         	IPage<Note> pageList = noteService.getNoteList(page, form);
 
 			model.addAttribute("pageList", pageList);
