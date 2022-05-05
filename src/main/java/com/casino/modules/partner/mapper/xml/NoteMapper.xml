@@ -17,21 +17,14 @@
 			</otherwise>
 		</choose>
 	</sql>
-		
-	<select id="getNoteList" resultType="com.casino.modules.partner.common.entity.Note">
+
+	<select id="getSendList" resultType="com.casino.modules.partner.common.entity.Note">
 		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
 		FROM note n
-		LEFT JOIN member m ON m.seq = n.sender
-		<where>
-			1=1 AND n.sender = #{form.sender}
-			<if test="form.type != null">
-				AND n.type = #{form.type}
-			</if>
-			<if test="form.sendType != null">
-				AND n.send_type = #{form.sendType}
-			</if>
-			<include refid="sendListWhere"/>
-		</where>
+				 LEFT JOIN member m ON m.seq = n.receiver
+		WHERE n.type = 1
+		  AND n.send_type = 1
+		  AND n.sender = #{sender}
 		ORDER BY n.send_time DESC
 	</select>
 
@@ -39,7 +32,8 @@
 		SELECT n.*, m.nickname, m.account_holder, m.id AS "mId"
 		FROM note n
 		LEFT JOIN member m ON m.seq = n.receiver
-		WHERE n.type = 3
+		WHERE n.type = 1
+		AND n.send_type = 0
 		AND n.receiver = #{receiver}
 		ORDER BY n.send_time DESC
 	</select>

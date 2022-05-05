@@ -14,7 +14,9 @@ public interface INoteService extends IService<Note> {
 
 	List<Note> noteList(Integer pageNo, Integer pageSize, Note note);
 	
-	IPage<Note> getNoteList(Page<Note> page, NoteForm form);
+	IPage<Note> getSendList(Page<Note> page, String sender);
+
+	IPage<Note> getReceivedList(Page<Note> page, String receiver);
 
 	boolean getNoteContentBySeq(String seq);
 	

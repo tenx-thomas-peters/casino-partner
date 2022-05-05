@@ -65,10 +65,7 @@ public class NoteController {
         try {
         	Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
         	Page<Note> page = new Page<Note>(pageNo, pageSize);
-			form.setType(CommonConstant.TYPE_P_NOTE);
-			form.setSendType(CommonConstant.TYPE_SEND_NOTE);
-			form.setSender(loginUser.getSeq());
-        	IPage<Note> pageList = noteService.getNoteList(page, form);
+        	IPage<Note> pageList = noteService.getReceivedList(page, loginUser.getSeq());
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
@@ -90,10 +87,7 @@ public class NoteController {
 		try {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
 			Page<Note> page = new Page<Note>(pageNo, pageSize);
-			form.setType(CommonConstant.TYPE_P_NOTE);
-			form.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
-			form.setSender(loginUser.getSeq());
-			IPage<Note> pageList = noteService.getNoteList(page, form);
+			IPage<Note> pageList = noteService.getSendList(page, loginUser.getSeq());
 
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("page", pageList);
