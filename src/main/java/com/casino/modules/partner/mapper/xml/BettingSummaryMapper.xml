@@ -51,4 +51,33 @@
         </where>
         ORDER BY bs.check_time DESC
     </select>
+
+    <select id="getRollingAmount" resultType="java.util.Map">
+        SELECT
+            <if test="partnerType == 3">
+                IFNULL(SUM(bs.slot_headquarter_rolling_amount), 0) AS slotRollingAmount,
+                IFNULL(SUM(bs.baccarat_headquarter_rolling_amount), 0) AS baccaratRollingAmount
+            </if>
+            <if test="partnerType == 2">
+                IFNULL(SUM(bs.slot_distributor_rolling_amount), 0) AS slotRollingAmount,
+                IFNULL(SUM(bs.baccarat_distributor_rolling_amount), 0) AS baccaratRollingAmount
+            </if>
+            <if test="partnerType == 1">
+                IFNULL(SUM(bs.slot_store_rolling_amount), 0) AS slotRollingAmount,
+                IFNULL(SUM(bs.baccarat_store_rolling_amount), 0) AS baccaratRollingAmount
+            </if>
+        FROM betting_summary bs
+        LEFT JOIN member m ON m.seq = bs.member_seq
+        WHERE
+            <if test="partnerType == 3">
+                bs.headquarter_seq = #{partnerSeq}
+            </if>
+            <if test="partnerType == 2">
+                bs.distributor_seq = #{partnerSeq}
+            </if>
+            <if test="partnerType == 1">
+                bs.store_seq = #{partnerSeq}
+            </if>
+        AND DATE(NOW())= DATE(bs.check_time)
+    </select>
 </mapper>
