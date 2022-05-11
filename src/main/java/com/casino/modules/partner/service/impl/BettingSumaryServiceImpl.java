@@ -11,6 +11,8 @@ import com.casino.modules.partner.common.form.BettingSummaryForm;
 import com.casino.modules.partner.mapper.BettingSummaryMapper;
 import com.casino.modules.partner.service.IBettingSummaryService;
 
+import java.util.Map;
+
 @Service
 public class BettingSumaryServiceImpl extends ServiceImpl<BettingSummaryMapper, BettingSummary> implements IBettingSummaryService {
 
@@ -23,5 +25,11 @@ public class BettingSumaryServiceImpl extends ServiceImpl<BettingSummaryMapper, 
             BettingSummaryForm bettingSummaryForm) {
         return bettingSummaryMapper.getBettingSummaryList(page, bettingSummaryForm);
     }
+
+    @Override
+    public Map<String, Number> getRollingAmount(String partnerSeq, int partnerType) {
+        return bettingSummaryMapper.getRollingAmount(partnerSeq, partnerType);
+    }
+
 
 }
