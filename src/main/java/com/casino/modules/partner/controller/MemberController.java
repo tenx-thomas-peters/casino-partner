@@ -440,9 +440,9 @@ public class MemberController {
 
             model.addAttribute("memberForm", memberForm);
             model.addAttribute("subHeadquarterList", subHeadquarterList);
-            model.addAttribute("url", "/partner/memberDetails");
+            model.addAttribute("url", "/member/memberDetails");
         } catch (Exception e) {
-            log.error("url: /partner/memberDetailsTop --- method: memberDetailsTop --- message: " + e.toString());
+            log.error("url: /member/memberDetails --- method: memberDetailsTop --- message: " + e.toString());
         }
         return "views/partner/common/memberDetail";
     }
