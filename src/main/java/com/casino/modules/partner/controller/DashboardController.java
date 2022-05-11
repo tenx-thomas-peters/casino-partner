@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.casino.modules.partner.service.IBettingSummaryService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class DashboardController {
 	
 	@Autowired
 	IBasicSettingService basicSettingService;
+
+	@Autowired
+	private IBettingSummaryService bettingSummaryService;
 
 	@RequestMapping(value = "/index")
 	public String index(Model model) {
@@ -60,7 +64,7 @@ public class DashboardController {
 				result.put("userType", userTypeStr);
 			}
 		} catch(Exception e) {
-			log.error("url: /dashboard/getHeaderInfo --- method: getHeaderInfo --- error: " + e.toString());
+			log.error("url: /dashboard/getUserType --- method: getHeaderInfo --- error: " + e.toString());
 		}
 		return result;
 	}
@@ -81,7 +85,12 @@ public class DashboardController {
 				result.put("noteCnt", noteCnt);
 				String holdingMoney = String.valueOf(loginUser.getMoneyAmount().intValue());			
 				result.put("holdingMoney", holdingMoney);
-				result.put("sameDayFee", String.valueOf(0));
+				System.out.println(loginUser.getSeq());
+				System.out.println(loginUser.getUserType());
+				Map<String, Number> dayFeeRow = bettingSummaryService.getRollingAmount(loginUser.getSeq(), loginUser.getUserType());
+				System.out.println(dayFeeRow);
+				float dayFee = dayFeeRow.get("slotRollingAmount").floatValue() + dayFeeRow.get("baccaratRollingAmount").floatValue();
+				result.put("sameDayFee", String.valueOf(dayFee));
 				result.put("feeCalculator", String.valueOf(0));
 				List<BasicSetting> basicSettingList = basicSettingService.list();
 				BasicSetting basicSetting = new BasicSetting();
@@ -92,6 +101,7 @@ public class DashboardController {
 			}			
 		} catch(Exception e) {
 			log.error("url: /dashboard/getHeaderInfo --- method: getHeaderInfo --- error: " + e.toString());
+			e.printStackTrace();
 		}
 		return result;
 	}
