@@ -2,6 +2,8 @@ $(document).ready(function(){
 	
 	setHeaderInfo();
 	setMenuList();
+
+	window.setInterval(setHeaderInfo,8000);
 	
 	function setHeaderInfo() {
 		$.ajax({
@@ -15,6 +17,7 @@ $(document).ready(function(){
 					var audio = new Audio();
 	            	audio.src = CONTEXT_ROOT + "assets/audio/alarm.ogg";
 	            	audio.play();
+					alert("읽지 못한 쪽지가 있습니다.\n확인해주세요.");
 				}
 				$('#holdingMoney').html(res.holdingMoney + " 韩元");
 				$('#sameDayFee').html(res.sameDayFee);

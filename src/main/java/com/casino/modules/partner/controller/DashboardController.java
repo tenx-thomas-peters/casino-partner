@@ -85,10 +85,7 @@ public class DashboardController {
 				result.put("noteCnt", noteCnt);
 				String holdingMoney = String.valueOf(loginUser.getMoneyAmount().intValue());			
 				result.put("holdingMoney", holdingMoney);
-				System.out.println(loginUser.getSeq());
-				System.out.println(loginUser.getUserType());
 				Map<String, Number> dayFeeRow = bettingSummaryService.getRollingAmount(loginUser.getSeq(), loginUser.getUserType());
-				System.out.println(dayFeeRow);
 				float dayFee = dayFeeRow.get("slotRollingAmount").floatValue() + dayFeeRow.get("baccaratRollingAmount").floatValue();
 				result.put("sameDayFee", String.valueOf(dayFee));
 				result.put("feeCalculator", String.valueOf(0));

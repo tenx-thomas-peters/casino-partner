@@ -38,15 +38,21 @@
                                             <th th:text="#{partner.common.recipient}"></th>
                                             <th th:text="#{partner.common.title}"></th>
                                             <th th:text="#{partner.common.date}"></th>
+                                            <th th:text="#{partner.common.state}"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
+                                            <input type="hidden"/>
                                             <td th:text="${entity.mId}"></td>
                                             <td>
-                                                <a class="noteTitle mouse-pointer" th:text="${entity.title}" th:data-content="${entity.content}" th:data-noteseq="${entity.seq}" data-closed="0" ></a>
+                                                <a class="noteTitle mouse-pointer" th:text="${entity.title}" th:data-content="${entity.content}" th:data-noteseq="${entity.seq}"  th:data-readstatus="${entity.readStatus}" data-closed="0" ></a>
                                             </td>
                                             <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd HH:MM:SS') : '')}"></td>
+                                            <td class="note_read_status">
+                                                <span th:if="${entity.readStatus == 0}" th:text="#{admin.status.unread}" style="color: red"></span>
+                                                <span th:if="${entity.readStatus == 1}" th:text="#{admin.status.read}"></span>
+                                            </td>
                                         </tr>
                                         <tr th:if="${#lists.isEmpty(pageList.records)}" class="text-center">
                                             <td colspan="10" th:text="#{partner.common.noData}"></td>

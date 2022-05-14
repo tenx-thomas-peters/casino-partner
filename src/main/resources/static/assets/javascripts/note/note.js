@@ -92,14 +92,24 @@ $(document).ready(function(){
 							.append("<div class='col-md-1'>Content : </div>").append("<div class='col-md-10' style='text-align: left'>" + content + "</div>")));
 			$(this).parent().parent().after(detailTr);
 
-            let note_seq = $(this).data("noteseq")
+            let note_seq = $(this).data("noteseq");
             // set read status for note
-            $.ajax({
-                url: "changeReadNote",
-                type: "GET",
-                data: {seq: note_seq},
-            });
-
+            let readStatus = $(this).data("readstatus");
+            console.log(note_seq);
+            console.log(readStatus);
+            if(readStatus === 0){
+                $.ajax({
+                    url: "changeReadNote",
+                    type: "GET",
+                    data: {seq: note_seq},
+                    success: function (res){
+                        if(res.success){
+                            console.log(res);
+                            $(".note_read_status").html("<span>읽음</span>");
+                        }
+                    }
+                });
+            }
 		} else {
 			$(this).attr("data-closed", 0);
 			$(this).parent().parent().next().remove();
