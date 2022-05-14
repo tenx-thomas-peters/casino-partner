@@ -224,4 +224,30 @@ public class NoteController {
     	}
     	return result;
     }
+
+
+
+	@GetMapping(value = "/changeReadNote")
+	@ResponseBody
+	public Result<Note> changeReadNote(
+			@RequestParam(value = "seq") String seq,
+		 	Model model
+	) {
+		Result<Note> result = new Result<>();
+
+		try {
+			Note note = noteService.getById(seq);
+			note.setReadStatus(1);
+			if (noteService.updateById(note)) {
+				result.success("Operate Success");
+			} else {
+				result.error500("Operate Faild");
+			}
+		}
+		catch (Exception e){
+			log.error("url: /note/changeReadNote --- method: changeReadNote --- error: " + e.toString());
+		}
+
+		return result;
+	}
 }

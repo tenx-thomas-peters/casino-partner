@@ -44,7 +44,7 @@
                                         <tr th:if="${not #lists.isEmpty(pageList.records)}" th:each="entity : ${pageList.records}">
                                             <td th:text="${entity.mId}"></td>
                                             <td>
-                                                <a class="noteTitle" th:text="${entity.title}" th:data-content="${entity.content}" data-closed="0"></a>
+                                                <a class="noteTitle mouse-pointer" th:text="${entity.title}" th:data-content="${entity.content}" th:data-noteseq="${entity.seq}" data-closed="0" ></a>
                                             </td>
                                             <td th:text="${(entity.sendTime != null ? #dates.format(entity.sendTime, 'yyyy-MM-dd HH:MM:SS') : '')}"></td>
                                         </tr>

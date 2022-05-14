@@ -283,3 +283,7 @@ html body .tabs-primary .nav-tabs li a, html.dark body .tabs-primary .nav-tabs l
 .money-green {
 	color: #4afc41;
 }
+
+.mouse-pointer{
+    cursor: pointer;
+}

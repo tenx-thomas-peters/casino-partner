@@ -91,6 +91,15 @@ $(document).ready(function(){
 							.append("<div class='col-md-10' style='text-align: left'>" + title +"</div class='row'></div><br/><br/>")
 							.append("<div class='col-md-1'>Content : </div>").append("<div class='col-md-10' style='text-align: left'>" + content + "</div>")));
 			$(this).parent().parent().after(detailTr);
+
+            let note_seq = $(this).data("noteseq")
+            // set read status for note
+            $.ajax({
+                url: "changeReadNote",
+                type: "GET",
+                data: {seq: note_seq},
+            });
+
 		} else {
 			$(this).attr("data-closed", 0);
 			$(this).parent().parent().next().remove();
@@ -181,7 +190,7 @@ function readAll() {
                 window.location.reload();
             }, 1000);
 		},
-		errror: function(err) {
+		error: function(err) {
 			new PNotify({
                 title: 'Error!',
                 text: err.message,
