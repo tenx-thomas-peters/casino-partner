@@ -115,7 +115,26 @@ $(document).ready(function(){
 			$(this).parent().parent().next().remove();
 		}	
 	});
-	
+
+    $(document).on('click', '.deleteBtn', function(e){
+        let seq = $(this).data('seq');
+        if (confirm("정말 삭제하시겠습니까?") == true) {
+            $.ajax({
+                url: "deleteNote",
+                type: "GET",
+                data: {seq: seq},
+                success: function (res){
+                    if(res.success){
+                        console.log(res);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                }
+            });
+        }
+    })
+
 	$("#pNoteForm").validate({
         submitHandler: function(form) {
             $.ajax({
