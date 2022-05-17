@@ -14,10 +14,10 @@ $(document).ready(function(){
 				$('#casinoRate').html(res.casinoRate + "%");
 				$('#noteCnt').html(res.noteCnt);
 				if(res.noteCnt > 0) {
+					alert("새 쪽지 "+res.noteCnt +"개 도착하였습니다");
 					var audio = new Audio();
 	            	audio.src = CONTEXT_ROOT + "assets/audio/alarm.ogg";
 	            	audio.play();
-					alert("새 쪽지 "+res.noteCnt +"개 도착하였습니다");
 				}
 				$('#holdingMoney').html(res.holdingMoney + " 韩元");
 				$('#sameDayFee').html(res.sameDayFee);

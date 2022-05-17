@@ -35,6 +35,7 @@
 		WHERE n.type = 1
 		AND n.send_type = 0
 		AND n.receiver = #{receiver}
+		AND n.remove_status = 0
 		ORDER BY n.send_time DESC
 	</select>
 
