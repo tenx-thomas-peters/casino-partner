@@ -58,6 +58,9 @@ public class Note implements Serializable {
 	@TableField(value = "type")
 	private Integer type;
 
+	@TableField(value = "remove_status")
+	private Integer removeStatus;
+
 	@TableField(value = "send_type")
 	private Integer sendType;
 

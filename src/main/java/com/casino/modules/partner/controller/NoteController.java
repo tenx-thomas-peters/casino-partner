@@ -190,6 +190,7 @@ public class NoteController {
     		if(note != null) {
 				note.setSeq(UUIDGenerator.generate());
 				note.setReceiver(note.getReceiver());
+				note.setSendTime(new Date());
 				note.setSender(loginUser.getSeq());
 				note.setReadStatus(CommonConstant.STATUS_UN_READ);
 				note.setRecommendStatus(CommonConstant.STATUS_UN_RECOMMEND);
@@ -238,6 +239,31 @@ public class NoteController {
 		try {
 			Note note = noteService.getById(seq);
 			note.setReadStatus(1);
+			if (noteService.updateById(note)) {
+				result.success("Operate Success");
+			} else {
+				result.error500("Operate Faild");
+			}
+		}
+		catch (Exception e){
+			log.error("url: /note/changeReadNote --- method: changeReadNote --- error: " + e.toString());
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/deleteNote")
+	@ResponseBody
+	public Result<Note> deleteNote(
+			@RequestParam(value = "seq") String seq,
+			Model model
+	) {
+		Result<Note> result = new Result<>();
+
+		try {
+			Note note = noteService.getById(seq);
+			note.setReadStatus(1);
+			note.setRemoveStatus(1);
 			if (noteService.updateById(note)) {
 				result.success("Operate Success");
 			} else {
