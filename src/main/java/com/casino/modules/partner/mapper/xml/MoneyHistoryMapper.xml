@@ -50,11 +50,21 @@
 		LEFT JOIN member ms ON mu.store_seq = ms.seq
 		<where>
 			mon.operation_type = 0
+			AND mu.user_type = 0
 			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
 				AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
 			</if>
 			<if test="entity.toProcessTime != null and entity.toProcessTime != ''">
 				AND DATE(#{entity.toProcessTime}) >= DATE(mon.application_time)
+			</if>
+			<if test="entity.partnerType == 1">
+				AND mu.store_seq = #{entity.partnerSeq}
+			</if>
+			<if test="entity.partnerType == 2">
+				AND mu.distributor_seq = #{entity.partnerSeq}
+			</if>
+			<if test="entity.partnerType == 3">
+				AND mu.sub_headquarter_seq = #{entity.partnerSeq}
 			</if>
 			<choose>
 				<when test="entity.IDOrNickname != null and entity.IDOrNickname == entity.idOrNickNameId">

@@ -88,7 +88,7 @@
 								<tr th:each="entity : ${page.records}" class="text-center">
 									<td th:text="${entity.member.distributor != null ? entity.member.distributor.id : ''}"></td>
 									<td th:text="${entity.member.distributor != null ? entity.member.distributor.nickname : ''}"></td>
-									<td th:text="${entity.member.distributor != null ? entity.member.distributor.level : ''}"></td>
+									<td th:text="${entity.member.distributor != null ? entity.member.level : ''}"></td>
 									<td th:text="${entity.member.id}"></td>
 									<td th:text="${entity.member.nickname}"></td>
 									<td th:text="${entity.member.accountHolder}"></td>

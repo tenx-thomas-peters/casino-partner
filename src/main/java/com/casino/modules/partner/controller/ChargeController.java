@@ -49,8 +49,11 @@ public class ChargeController {
     		@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
     		HttpServletRequest request) {
 		try {
+			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
 			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
+			moneyHistory.setPartnerSeq(loginUser.getSeq());
+			moneyHistory.setPartnerType(loginUser.getUserType());
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
             Float totalApplicationAmount = 0.0f;
             Float totalActualAmount = 0.0f;

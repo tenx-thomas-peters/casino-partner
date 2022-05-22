@@ -164,6 +164,12 @@ public class MoneyHistory implements Serializable {
 	
 	@TableField(exist = false)
 	private String nickname;
+
+	@TableField(exist = false)
+	private String partnerSeq;
+
+	@TableField(exist = false)
+	private Integer partnerType;
 	
 	@TableField(exist = false)
 	private String partnerId;
