@@ -463,9 +463,9 @@ public class MemberController {
         return "views/partner/member/moneyChange";
     }
     
-    @PostMapping(value = "moneyChange")
+    @PostMapping(value = "updateHoldingMoney")
     @ResponseBody
-    public Result<JSONObject> moneyChange(
+    public Result<JSONObject> updateHoldingMoney(
             @RequestParam(value = "memberSeq") String memberSeq,
             @RequestParam(value = "prevMoneyAmount") Float prevMoneyAmount,
             @RequestParam(value = "prevMileageAmount") Float prevMileageAmount,
@@ -481,6 +481,7 @@ public class MemberController {
             List<Dict> reasonList = dictService.list(qw);
             String reasonStrKey = reasonList.get(0).getStrValue();
             reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
+
 
             if (memberService.moneyChange(memberSeq, loginUser.getSeq(), prevMoneyAmount,
                     prevMileageAmount, variableAmount, transactionClassification, CommonConstant.MONEY_REASON_PARTNER_PAYMENT, reason)) {

@@ -31,7 +31,7 @@ form.validate({
     },
     submitHandler: function (form) {
         $.ajax({
-            url: CONTEXT_ROOT + '/member/moneyChange',
+            url: CONTEXT_ROOT + '/member/updateHoldingMoney',
             type: 'POST',
             data: $(form).serialize(),
             dataType: 'json',

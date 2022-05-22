@@ -137,9 +137,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 					: prevMoneyAmount - variableAmount;
 			moneyHistory.setFinalAmount(finalAmount);
 			moneyHistory.setOperationType(transactionClassification);
-			moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
+			moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
 			moneyHistory.setReasonType(reasonType);
-			moneyHistory.setReason(reason);
+
+			String reasonMember = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)?
+					"파트너 지급 ["+variableAmount + "]":
+					"파트너 회수 [ -"+variableAmount + "]";
+
+			moneyHistory.setReason(reasonMember);
 
 			member.setMoneyAmount(finalAmount);
 			
@@ -159,7 +164,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			partnerMoneyHistory.setOperationType(transactionClassification);
 			partnerMoneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
 			partnerMoneyHistory.setReasonType(reasonType);
-			partnerMoneyHistory.setReason(reason);
+
+			String reasonPartner = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)?
+				"파트너 지급 [-"+variableAmount + "]":
+				"파트너 회수 ["+variableAmount + "]";
+			partnerMoneyHistory.setReason(reasonPartner);
 			
 			partner.setMoneyAmount(partnerFinalAmount);
 
