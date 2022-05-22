@@ -17,9 +17,9 @@
 					<h2 class="panel-title" th:text="#{partner.deposit.requestForDeposit}"></h2>
 				</header>
 				<div class="panel-body">
-					<form id="formSearch" th:action="@{/charge/charge}" th:object="${moneyHistory}" method="post" class="form-inline charge-form">
+					<form id="formSearch" th:action="@{/charge/charge}" th:object="${member}" method="post" class="form-inline charge-form">
 						<div class="row">
-							<input type="hidden" th:field="*{receiver}" id="receiver" />
+							<input type="hidden" th:field="*{seq}" id="receiver" />
 							<div class="col-md-12 form-group">
 								<label class="control-label col-md-1 form-label">
 									<span th:text="#{partner.deposit.depositBank}"></span>

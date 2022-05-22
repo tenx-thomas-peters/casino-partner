@@ -14,7 +14,7 @@ function reset() {
 
 function accountInquiry() {
 	$.ajax({
-        url: "accountInquiry",
+        url: "depositAccountRequest",
         type: 'GET',
         success: function(res) {
             if (res.success) {
@@ -69,7 +69,7 @@ function fast() {
         });
 	} else {
 		$.ajax({
-	        url: "fast",
+	        url: "applicationDeposit",
 	        type: 'POST',
 	        data: {receiverSeq: receiverSeq, amount: amount},
 	        dataType: 'json',

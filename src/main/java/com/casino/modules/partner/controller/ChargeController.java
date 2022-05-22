@@ -1,14 +1,17 @@
 package com.casino.modules.partner.controller;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -77,8 +80,8 @@ public class ChargeController {
 	}
 		
 	// ------------- Request for deposit -------------
-	@RequestMapping(value = "/charge")
-	public String depositLog(Model model, MoneyHistory moneyHistory,
+	@RequestMapping(value = "/deposit")
+	public String deposit(Model model,
 			@RequestParam(name = "column", defaultValue = "mon.application_time") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
     		@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -86,60 +89,49 @@ public class ChargeController {
     		HttpServletRequest request) {
 		try {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
-			moneyHistory.setNickname(loginUser.getNickname());
-			moneyHistory.setBankName(loginUser.getBankName());
-			moneyHistory.setAccountHolder(loginUser.getAccountHolder());
-			moneyHistory.setReceiver(loginUser.getSeq());
 			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
-            moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
-            IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, moneyHistory, loginUser.getSeq(),
+            IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, loginUser.getSeq(),
             		CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, column, order);
-			System.out.println("pageList.getRecords()");
-			System.out.println(pageList.getRecords());
 
             model.addAttribute("page", pageList);
-
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("column", column);
             model.addAttribute("order", order);
-            model.addAttribute("moneyHistory", moneyHistory);
-            model.addAttribute("url", "/charge/charge");
+			model.addAttribute("member", loginUser);
+            model.addAttribute("url", "/charge/deposit");
 		} catch(Exception e) {
-			log.error("url: /member/depositLog --- method: depositLog --- error: " + e.toString());
+			log.error("url: /member/deposit --- method: depositLog --- error: " + e.toString());
 			e.printStackTrace();
 		}
 		return "views/partner/member/depositLog";
 	}
-	
-	@RequestMapping(value = "/accountInquiry")
-	@ResponseBody
-	public Result<Note> accountInquiry() {
-		Result<Note> result = new Result<>();
+
+	@RequestMapping(value = "/withdraw", method= { RequestMethod.GET, RequestMethod.POST})
+	public String withdraw(Model model,
+							   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+							   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+							   @RequestParam(value = "order", defaultValue = "1") Integer order,
+							   @RequestParam(value = "column", defaultValue = "application_time") String column) {
 		try {
-			Note note = new Note();
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
-			note.setSeq(UUIDGenerator.generate());
-	    	note.setSender(loginUser.getSeq());
-	    	note.setReceiver("운영팀");
-	    	note.setTitle("빠른계좌요청");
-	    	note.setContent("빠른 계좌를 요청합니다");
-	    	note.setType(CommonConstant.TYPE_P_NOTE);
-	    	note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
-	    	if (noteService.save(note)) {
-	    		result.success("success");
-	    	} else {
-	    		result.error505("failed");
-	    	}
-		} catch (Exception e) {
-			log.error("url: /charge/checkInquiry --- method: checkInquiry --- error: " + e.toString());
+			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
+
+			IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, loginUser.getSeq(),
+					CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, column, order);
+
+			model.addAttribute("page", pageList);
+			model.addAttribute("member", loginUser);
+			model.addAttribute("url", "/charge/withdraw");
+		} catch(Exception e) {
+			log.error("url: /member/withdraw --- method: withdrawList --- error: " + e.toString());
 		}
-		return result;
+		return "views/partner/member/withdrawLog";
 	}
-	
-	@RequestMapping(value = "fast")
+
+	@RequestMapping(value = "applicationDeposit")
 	@ResponseBody
-	public Result<MoneyHistory> fast(@RequestParam("amount") Float amount, @RequestParam("receiverSeq") String receiverSeq) {
+	public Result<MoneyHistory> applicationDeposit(@RequestParam("amount") Float amount, @RequestParam("receiverSeq") String receiverSeq) {
 		Result<MoneyHistory> result = new Result<>();
 		try {
 			Member receiver = memberService.getById(receiverSeq);
@@ -163,7 +155,50 @@ public class ChargeController {
         		result.error505("apply charge failed");
         	}
 		} catch (Exception e) {
-			log.error("url: /charge/fast --- method: fast --- error: " + e.toString());
+			log.error("url: /charge/applicationDeposit --- method: fast --- error: " + e.toString());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/applicationWithdrawal")
+	@ResponseBody
+	public Result<Map<String, Object>> applicationWithdrawal(
+			@RequestParam(value="variableAmount") Integer variableAmount, HttpServletRequest request) {
+		Result<Map<String, Object>> result = new Result<>();
+		try {
+
+			if(moneyHistoryService.applicationWithdrawal(variableAmount)) {
+				result.success("application success");
+			} else {
+				result.error505("application failed");
+			}
+		} catch(Exception e) {
+			log.error("url: /charge/applicationWithdrawal ---- method: applicationWithdrawal --- error: " + e.toString());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/depositAccountRequest")
+	@ResponseBody
+	public Result<Note> accountInquiry() {
+		Result<Note> result = new Result<>();
+		try {
+			Note note = new Note();
+			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+			note.setSeq(UUIDGenerator.generate());
+			note.setSender(loginUser.getSeq());
+			note.setReceiver("운영팀");
+			note.setTitle("빠른계좌요청");
+			note.setContent("빠른 계좌를 요청합니다");
+			note.setType(CommonConstant.TYPE_P_NOTE);
+			note.setSendType(CommonConstant.TYPE_RECEIVE_NOTE);
+			if (noteService.save(note)) {
+				result.success("success");
+			} else {
+				result.error505("failed");
+			}
+		} catch (Exception e) {
+			log.error("url: /charge/checkInquiry --- method: checkInquiry --- error: " + e.toString());
 		}
 		return result;
 	}

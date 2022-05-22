@@ -83,9 +83,9 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 	}
 
 	@Override
-	public IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page, MoneyHistory moneyHistory,
+	public IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page,
 			String memberSeq, Integer operationType, String column, Integer order) {
-		return moneyHistoryMapper.getDepositWithdrawByMemberSeq(page, moneyHistory, memberSeq, operationType, column, order);
+		return moneyHistoryMapper.getDepositWithdrawByMemberSeq(page, memberSeq, operationType, column, order);
 	}
 
 	@Override

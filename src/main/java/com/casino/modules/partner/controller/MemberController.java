@@ -114,54 +114,7 @@ public class MemberController {
 		}
 		return "views/partner/member/memberWithdrawalList";
 	}
-	
-	@RequestMapping(value = "/withdraw", method= { RequestMethod.GET, RequestMethod.POST})
-	public String withdrawList(Model model,
-			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-			@RequestParam(value = "order", defaultValue = "1") Integer order,
-			@RequestParam(value = "column", defaultValue = "application_time") String column) {
-		try {
-			Member userInfo = (Member) SecurityUtils.getSubject().getPrincipal();
-						
-			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
-			IPage<MoneyHistory> pageList = moneyHistoryService.getWithdrawalListByUserInfo(
-					page, order, column, userInfo.getSeq(), CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW
-				);
-			
-			QueryWrapper<Member> qw = new QueryWrapper<>();
-			qw.eq("seq", userInfo.getSeq());
-			
-			Member member = memberService.getOne(qw);
-			
-			model.addAttribute("page", pageList);
-			model.addAttribute("member", member);
-			model.addAttribute("url", "/member/withdraw");
-		} catch(Exception e) {
-			log.error("url: /member/withdraw --- method: withdrawList --- error: " + e.toString());
-		}
-		return "views/partner/member/withdrawList";
-	}
-	
-	@RequestMapping(value = "/applicationWithdrawal")
-	@ResponseBody
-	public Result<Map<String, Object>> applicationWithdrawal(
-			@RequestParam(value="variableAmount") Integer variableAmount, HttpServletRequest request) {
-		Result<Map<String, Object>> result = new Result<>();
-		try {
-			
-			if(moneyHistoryService.applicationWithdrawal(variableAmount)) {
-				result.success("application success");
-			} else {
-				result.error505("application failed");
-			}
-		} catch(Exception e) {
-			log.error("url: /member/withdraw ---- method: applicationWithdrawal --- error: " + e.toString());
-		}
-		return result;
-	}
-	
-	
+
     @RequestMapping(value = "/moneyDetail", method= { RequestMethod.GET, RequestMethod.POST})    
     public String moneyLoglist(Model model,
     		@ModelAttribute("moneyHistory") MoneyHistory moneyHistory,
