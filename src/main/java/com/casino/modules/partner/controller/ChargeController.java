@@ -92,10 +92,13 @@ public class ChargeController {
 			moneyHistory.setReceiver(loginUser.getSeq());
 			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
             moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
-            IPage<MoneyHistory> pageList = moneyHistoryService.getMonthDepositLogByMemberSeq(page, moneyHistory, loginUser.getSeq(), 
+            IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, moneyHistory, loginUser.getSeq(),
             		CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, column, order);
-            
+			System.out.println("pageList.getRecords()");
+			System.out.println(pageList.getRecords());
+
             model.addAttribute("page", pageList);
+
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("column", column);
@@ -104,6 +107,7 @@ public class ChargeController {
             model.addAttribute("url", "/charge/charge");
 		} catch(Exception e) {
 			log.error("url: /member/depositLog --- method: depositLog --- error: " + e.toString());
+			e.printStackTrace();
 		}
 		return "views/partner/member/depositLog";
 	}

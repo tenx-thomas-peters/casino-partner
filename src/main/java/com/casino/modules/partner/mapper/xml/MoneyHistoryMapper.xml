@@ -176,7 +176,7 @@
 		mon.application_time DESC
 	</select>
 	
-	<select id="getMonthDepositLogByMemberSeq" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
+	<select id="getDepositWithdrawByMemberSeq" resultType="com.casino.modules.partner.common.entity.MoneyHistory">
 		SELECT mh.seq AS "seq",
 			mh.application_time AS "applicationTime",
 			mh.process_time AS "processTime",
@@ -192,17 +192,12 @@
 			m.color AS "member.color",
 			m.account_holder AS "member.accountHolder",
 			m.level_seq AS "member.levelSeq",
-			m.bank_name AS "member.bankName",
-			md.seq AS "member.distributor.seq",
-			md.id AS "member.distributor.id",
-			md.nickname AS "member.distributor.nickname"
+			m.bank_name AS "member.bankName"
 		FROM money_history mh
 		INNER JOIN member m ON mh.receiver = m.seq
-		LEFT JOIN member md ON m.distributor_seq = md.seq
 		<where>
-			mh.application_time BETWEEN NOW() - INTERVAL 1 MONTH AND NOW()
-			<if test="distributorSeq != null and distributorSeq != ''">
-				AND m.distributor_seq = #{distributorSeq}
+			<if test="memberSeq != null and memberSeq != ''">
+				AND mh.receiver = #{memberSeq}
 			</if>
 			<if test="operationType != null">
 				AND mh.operation_type = #{operationType}

@@ -199,4 +199,5 @@ public class MoneyHistory implements Serializable {
 	@TableField(exist = false)
 	private Date finalApplicationTime;
 
+
 }

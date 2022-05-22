@@ -21,7 +21,7 @@ public interface MoneyHistoryMapper extends BaseMapper<MoneyHistory> {
             @Param("userTypeNormal") Integer userTypeNormal
             );
 	
-	IPage<MoneyHistory> findList(Page<MoneyHistory> page, @Param("entity") MoneyHistory moneyHistory, 
+	IPage<MoneyHistory> findList(Page<MoneyHistory> page, @Param("entity") MoneyHistory moneyHistory,
 			@Param("column") String column, @Param("order") Integer order);
 	
 	IPage<MoneyHistory> findMemberMoneyLog(Page<MoneyHistory> page, 
@@ -41,9 +41,9 @@ public interface MoneyHistoryMapper extends BaseMapper<MoneyHistory> {
 
 	Float getTotalWithdraw(@Param("MONEY_OPERATION_TYPE_WITHDRAW") Integer MONEY_OPERATION_TYPE_WITHDRAW);
 
-	IPage<MoneyHistory> getMonthDepositLogByMemberSeq(Page<MoneyHistory> page, 
+	IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page,
 			@Param("entity") MoneyHistory moneyHistory,
-			@Param("distributorSeq") String distributorSeq, 
+			@Param("memberSeq") String memberSeq,
 			@Param("operationType") Integer operationType, 
 			@Param("column") String column, 
 			@Param("order") Integer order);
