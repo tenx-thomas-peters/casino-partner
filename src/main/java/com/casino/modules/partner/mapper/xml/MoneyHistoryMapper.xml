@@ -49,7 +49,7 @@
 		LEFT JOIN member md ON mu.distributor_seq = md.seq
 		LEFT JOIN member ms ON mu.store_seq = ms.seq
 		<where>
-			mon.operation_type = 0
+			mon.operation_type = #{entity.operationType}
 			AND mu.user_type = 0
 			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
 				AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})

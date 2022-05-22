@@ -84,24 +84,25 @@
         								<th th:text="#{partner.common.id}"></th>
         								<th th:text="#{partner.common.nickname}"></th>
         								<th th:text="#{partner.common.accountHolder}"></th>
-        								<th th:text="#{partner.money.log.prevAmount}"></th>
+										<th th:text="#{partner.common.applicationAmount}"></th>
         								<th th:text="#{partner.withdrawal.withdrawalAmount}"></th>
         								<th th:text="#{partner.common.applicationTime}"></th>
         								<th th:text="#{partner.common.processingTime}"></th>
         							</tr>
         						</thead>
         						<tbody>
-        							<tr th:if="${not #lists.isEmpty(page.records)}" th:each="item : ${page.records}">
-        								<td th:text="${item.partnerId}"></td>
-        								<td th:text="${item.partnerNickname}"></td>
-        								<td th:text="${item.level}"></td>
-        								<td th:text="${item.id}"></td>
-        								<td th:text="${item.nickname}"></td>
-        								<td th:text="${item.accountHolder}"></td>
-        								<td th:text="${#numbers.formatDecimal(item.prevAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-        								<td th:text="${#numbers.formatDecimal(item.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
-        								<td th:text="${#dates.format(item.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-        								<td th:text="${#dates.format(item.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        							<tr th:if="${not #lists.isEmpty(page.records)}" th:each="entity : ${page.records}">
+										<td th:text="${entity.member.distributor != null ? entity.member.distributor.id : ''}"></td>
+										<td th:text="${entity.member.distributor != null ? entity.member.distributor.nickname : ''}"></td>
+										<td th:text="${entity.member.level}"></td>
+										<td th:text="${entity.member.id}"></td>
+										<td th:text="${entity.member.nickname}"></td>
+										<td th:text="${entity.member.accountHolder}"></td>
+										<td class="applicationAmount" th:data-val="${entity.variableAmount}" th:text="${#numbers.formatDecimal(entity.variableAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#numbers.formatDecimal(entity.actualAmount, 1, 'COMMA', 2, 'POINT').replace('.00', '')}"></td>
+										<td th:text="${#dates.format(entity.applicationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:if="${entity.status == 2}" th:text="#{partner.common.cancel}"></td>
+										<td th:if="${entity.status != 2}" th:text="${#dates.format(entity.processTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
         							</tr>
         							<tr th:if="${#lists.isEmpty(page.records)}">
 										<td colspan="15" class="no-reocrd" th:text="#{partner.common.noData}"></td>

@@ -10,10 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -44,7 +41,7 @@ public class ChargeController {
 	private IMemberService memberService;
 	
 	// ----------- Membership deposit application ---------------
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/memberDepositLog")
 	public String memberDepositLog(Model model, MoneyHistory moneyHistory,
 			@RequestParam(name = "column", defaultValue = "mon.application_time") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
@@ -57,6 +54,7 @@ public class ChargeController {
             moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
 			moneyHistory.setPartnerSeq(loginUser.getSeq());
 			moneyHistory.setPartnerType(loginUser.getUserType());
+			moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
             Float totalApplicationAmount = 0.0f;
             Float totalActualAmount = 0.0f;
@@ -78,10 +76,40 @@ public class ChargeController {
 		}
 		return "views/partner/member/memberDepositLog";
 	}
+
+	// ------------- Withdrawal request ----------------
+	@RequestMapping(value = "/memberWithdrawLog", method= { RequestMethod.GET, RequestMethod.POST})
+	public String memberWithdrawLog(Model model,
+									   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+									   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+									   @RequestParam(value = "order", defaultValue = "1") Integer order,
+									   @RequestParam(value = "column", defaultValue = "create_date") String column,
+									   @ModelAttribute("moneyHistory") MoneyHistory moneyHistory,
+									   HttpServletRequest httpServletRequest) {
+		try {
+			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+
+			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
+			moneyHistory.setCheckTimeType(moneyHistory.getCheckTimeTypeApplication());
+			moneyHistory.setPartnerSeq(loginUser.getSeq());
+			moneyHistory.setPartnerType(loginUser.getUserType());
+			moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
+			IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
+
+			Float totalWithdraw = moneyHistoryService.getTotalWithdraw(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+
+			model.addAttribute("page", pageList);
+			model.addAttribute("totalWithdraw", totalWithdraw);
+			model.addAttribute("url", "/member/memberWithdrawLog");
+		} catch(Exception e) {
+			log.error("url: /member/memberWithdrawLog --- method: withdrawlRequest --- error: " + e.toString());
+		}
+		return "views/partner/member/memberWithdrawLog";
+	}
 		
 	// ------------- Request for deposit -------------
-	@RequestMapping(value = "/deposit")
-	public String deposit(Model model,
+	@RequestMapping(value = "/myDeposit")
+	public String myDeposit(Model model,
 			@RequestParam(name = "column", defaultValue = "mon.application_time") String column,
 			@RequestParam(name = "order", defaultValue = "1") Integer order,
     		@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -99,16 +127,16 @@ public class ChargeController {
             model.addAttribute("column", column);
             model.addAttribute("order", order);
 			model.addAttribute("member", loginUser);
-            model.addAttribute("url", "/charge/deposit");
+            model.addAttribute("url", "/charge/myDeposit");
 		} catch(Exception e) {
-			log.error("url: /member/deposit --- method: depositLog --- error: " + e.toString());
+			log.error("url: /member/myDeposit --- method: depositLog --- error: " + e.toString());
 			e.printStackTrace();
 		}
 		return "views/partner/member/depositLog";
 	}
 
-	@RequestMapping(value = "/withdraw", method= { RequestMethod.GET, RequestMethod.POST})
-	public String withdraw(Model model,
+	@RequestMapping(value = "/myWithdraw", method= { RequestMethod.GET, RequestMethod.POST})
+	public String myWithdraw(Model model,
 							   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 							   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
 							   @RequestParam(value = "order", defaultValue = "1") Integer order,
@@ -122,9 +150,9 @@ public class ChargeController {
 
 			model.addAttribute("page", pageList);
 			model.addAttribute("member", loginUser);
-			model.addAttribute("url", "/charge/withdraw");
+			model.addAttribute("url", "/charge/myWithdraw");
 		} catch(Exception e) {
-			log.error("url: /member/withdraw --- method: withdrawList --- error: " + e.toString());
+			log.error("url: /member/myWithdraw --- method: withdrawList --- error: " + e.toString());
 		}
 		return "views/partner/member/withdrawLog";
 	}

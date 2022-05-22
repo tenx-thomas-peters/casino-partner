@@ -88,32 +88,6 @@ public class MemberController {
 		return "views/partner/member/depositLog";
 	}
 	
-	
-	// ------------- Withdrawal request ----------------
-	@RequestMapping(value = "/withdrawlRequest", method= { RequestMethod.GET, RequestMethod.POST})
-	public String memberWithdrawalList(Model model,
-			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-			@RequestParam(value = "order", defaultValue = "1") Integer order,
-			@RequestParam(value = "column", defaultValue = "create_date") String column,
-			@ModelAttribute("moneyHistory") MoneyHistory moneyHistory,
-			HttpServletRequest httpServletRequest) {
-		try {
-			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
-			IPage<MoneyHistory> pageList = moneyHistoryService.getWithdrawList(
-					page, moneyHistory, order, column, CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW
-				);
-			
-			Float totalWithdraw = moneyHistoryService.getTotalWithdraw(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
-			
-			model.addAttribute("page", pageList);
-			model.addAttribute("totalWithdraw", totalWithdraw);
-			model.addAttribute("url", "/member/withdrawlRequest");
-		} catch(Exception e) {
-			log.error("url: /member/withdrawlRequest --- method: withdrawlRequest --- error: " + e.toString());
-		}
-		return "views/partner/member/memberWithdrawalList";
-	}
 
     @RequestMapping(value = "/moneyDetail", method= { RequestMethod.GET, RequestMethod.POST})    
     public String moneyLoglist(Model model,
