@@ -253,12 +253,12 @@ public class PartnerController {
 					slotBetAmountSum += item.getSlotBettingAmount();
 					slotWinningAmountSum += item.getSlotWinningAmount();
 					slotLostAmountSum += item.getSlotLostAmount();
-					slotBatRollingSum += item.getBatRolling();
+					slotBatRollingSum += item.getSlotStoreRollingAmount();
 
 					baccaratBetAmountSum += item.getBaccaratBettingAmount();
 					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
 					baccaratLostAmountSum += item.getBaccaratLostAmount();
-					baccaratBatRollingSum += item.getBatRolling();
+					baccaratBatRollingSum += item.getBaccaratStoreRollingAmount();
 				}
 			}
 			
@@ -587,12 +587,12 @@ public class PartnerController {
 						slotBetAmountSum += item.getSlotBettingAmount();
 						slotWinningAmountSum += item.getSlotWinningAmount();
 						slotLostAmountSum += item.getSlotLostAmount();
-						slotBatRollingSum += item.getBatRolling();
+						slotBatRollingSum += item.getSlotStoreRollingAmount();
 
 						baccaratBetAmountSum += item.getBaccaratBettingAmount();
 						baccaratWinningAmountSum += item.getBaccaratWinningAmount();
 						baccaratLostAmountSum += item.getBaccaratLostAmount();
-						baccaratBatRollingSum += item.getBatRolling();
+						baccaratBatRollingSum += item.getBaccaratStoreRollingAmount();
 				}
 			}
 			

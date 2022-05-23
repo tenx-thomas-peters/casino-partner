@@ -159,7 +159,7 @@
 												<span th:text="${#numbers.formatDecimal(entity.baccaratRate, 1, 'COMMA', 2, 'POINT').replace('.00', '') + '%'}"></span>
 											</p>
 										</td>
-										<td>0</td>
+										<td th:text="${entity.slotDistributorRollingAmount + entity.baccaratDistributorRollingAmount}"></td>
 										<td th:if="${entity.status == 0}" th:text="#{partner.common.normal}"></td>
 										<td th:if="${entity.status == 1}" th:text="#{partner.common.stop}"></td>
 	                                </tr>

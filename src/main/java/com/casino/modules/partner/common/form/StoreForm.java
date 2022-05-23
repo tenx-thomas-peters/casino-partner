@@ -53,8 +53,9 @@ public class StoreForm {
 
 	private Float slotLostAmount;
 	private Float baccaratLostAmount;
-	
-	private Float batRolling;
+
+	private Float slotStoreRollingAmount;
+	private Float baccaratStoreRollingAmount;
 	
 	private Float slotRate;
 	
