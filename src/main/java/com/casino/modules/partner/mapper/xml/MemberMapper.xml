@@ -908,7 +908,15 @@
 			GROUP BY mh.receiver) as amh ON amh.receiver = m1.seq
 		LEFT JOIN (SELECT al.member_seq, al.site, MAX(al.connection_date) as connection_date, al.connection_ip, al.connection_domain
 			FROM access_log AS al LEFT JOIN member mm ON mm.seq = al.member_seq GROUP BY al.member_seq) AS al ON al.member_seq = m1.seq
-		LEFT JOIN betting_summary bs ON bs.member_seq = m1.seq
+		LEFT JOIN (SELECT * FROM betting_summary WHERE
+					1=1
+					<if test="entity.fromApplicationTime != null and entity.fromApplicationTime != ''">
+						AND DATE(check_time) >= DATE(#{entity.fromApplicationTime})
+					</if>
+					<if test="entity.toApplicationTime != null and entity.toApplicationTime != ''">
+						AND DATE(#{entity.toApplicationTime}) >= DATE(check_time)
+					</if>
+					) bs ON bs.member_seq = m1.seq
         <where>
 			m1.user_type = #{entity.userType}
             <if test="entity.subHeadquarterSeq != null and entity.subHeadquarterSeq != ''">
