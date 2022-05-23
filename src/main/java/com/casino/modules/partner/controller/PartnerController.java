@@ -105,12 +105,12 @@ public class PartnerController {
 					slotBetAmountSum += item.getSlotBettingAmount();
 					slotWinningAmountSum += item.getSlotWinningAmount();
 					slotLostAmountSum += item.getSlotLostAmount();
-					slotBatRollingSum += item.getBatRolling();
+					slotBatRollingSum += item.getSlotDistributorRollingAmount();
 
 					baccaratBetAmountSum += item.getBaccaratBettingAmount();
 					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
 					baccaratLostAmountSum += item.getBaccaratLostAmount();
-					baccaratBatRollingSum += item.getBatRolling();
+					baccaratBatRollingSum += item.getBaccaratDistributorRollingAmount();
 				}
 			}
 			

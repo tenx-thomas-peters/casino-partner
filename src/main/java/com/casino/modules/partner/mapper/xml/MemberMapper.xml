@@ -248,7 +248,8 @@
 			IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
 			IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
 			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			IFNULL(SUM(bs.slot_distributor_rolling_amount), 0) AS slotDistributorRollingAmount,
+			IFNULL(SUM(bs.baccarat_distributor_rolling_amount), 0) AS baccaratDistributorRollingAmount,
 			bs.type AS gameType
 		FROM
 			member m
@@ -414,7 +415,8 @@
 			IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
 			IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
 			IFNULL(SUM(bs.baccarat_lost_amount),0)  AS baccaratLostAmount,
-			IFNULL(bs.bat_rolling, 0) AS batRolling,
+			IFNULL(SUM(bs.slot_rolling_amount), 0) AS slotRollingAmount,
+			IFNULL(SUM(bs.baccarat_rolling_amount), 0) AS baccaratRollingAmount,
 			bs.type AS gameType
 		FROM
 			member m
