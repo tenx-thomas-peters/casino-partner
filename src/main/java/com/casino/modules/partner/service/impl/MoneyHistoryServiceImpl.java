@@ -83,9 +83,9 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 	}
 
 	@Override
-	public IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page,
-			String memberSeq, Integer operationType, String column, Integer order) {
-		return moneyHistoryMapper.getDepositWithdrawByMemberSeq(page, memberSeq, operationType, column, order);
+	public IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page, MoneyHistory moneyHistory,
+			String memberSeq, String column, Integer order) {
+		return moneyHistoryMapper.getDepositWithdrawByMemberSeq(page, moneyHistory, memberSeq, column, order);
 	}
 
 	@Override
@@ -113,6 +113,7 @@ public class MoneyHistoryServiceImpl extends ServiceImpl<MoneyHistoryMapper, Mon
 				moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_IN_PROGRESS);
 				moneyHistory.setApplicationTime(new Date());
 				moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
+				moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
 				if (this.save(moneyHistory)) {
 					return true;
 				} else {

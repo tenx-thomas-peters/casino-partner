@@ -32,11 +32,11 @@
                             </label>
                             <div class="col-md-7 col-sm-6">
                                 <div class="radio-custom radio-primary">
-                                    <input type="radio" id="transactionInc" name="transactionClassification" value="2" checked />
+                                    <input type="radio" id="transactionInc" name="transactionClassification" value="0" checked />
                                     <label for="transactionInc" th:text="#{partner.member.payment}">Payment</label>
                                 </div>
                                 <div class="radio-custom radio-primary">
-                                    <input type="radio" id="transactionDec" name="transactionClassification" value="3" />
+                                    <input type="radio" id="transactionDec" name="transactionClassification" value="1" />
                                     <label class="text-danger" for="transactionDec" th:text="#{partner.member.collect}">Collect</label>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                 [[#{partner.common.reason}]]
                             </label>
                             <div class="col-md-7 col-sm-6">
-                                <textarea class="form-control" name="reason" data-plugin-textarea-autosize></textarea>
+                                <textarea class="form-control" name="note" data-plugin-textarea-autosize></textarea>
                             </div>
                         </div>
                     </form>

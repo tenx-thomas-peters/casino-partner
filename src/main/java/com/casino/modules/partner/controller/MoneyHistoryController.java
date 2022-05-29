@@ -37,7 +37,7 @@ public class MoneyHistoryController {
 	@Autowired
 	private IDictService dictService;
 	
-	@RequestMapping(value="/withdraw")
+	@RequestMapping(value="/partnerMoneyLogList")
     public String getPartnerMoneyLogList(Model model,
     		@ModelAttribute("moneyHistory") MoneyHistory moneyHistory,
     		@RequestParam(name = "column", defaultValue = "mh.application_time") String column,
@@ -70,7 +70,7 @@ public class MoneyHistoryController {
             model.addAttribute("order", order);
             model.addAttribute("url", "/money/withdraw");
     	} catch(Exception e) {
-    		log.error("url: /money/withdraw --- method: getPartnerMoneyLogList --- error: " + e.toString());
+    		log.error("url: /money/partnerMoneyLogList --- method: getPartnerMoneyLogList --- error: " + e.toString());
     		e.printStackTrace();
     	}
     	return "views/partner/moneyhistory/partnerMoneyLogList";

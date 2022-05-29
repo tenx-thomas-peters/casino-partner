@@ -398,20 +398,19 @@ public class MemberController {
             @RequestParam(value = "prevMileageAmount") Float prevMileageAmount,
             @RequestParam(value = "variableAmount") Float variableAmount,
             @RequestParam(value = "transactionClassification", defaultValue = "0") Integer transactionClassification,
-            @RequestParam(value = "reason", defaultValue = "") String reason) {
+            @RequestParam(value = "note", defaultValue = "") String note) {
         Result<JSONObject> result = new Result<>();
         try {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
-            QueryWrapper<Dict> qw = new QueryWrapper<>();
-            qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-            qw.eq("dict_value", CommonConstant.MONEY_REASON_PARTNER_PAYMENT);
-            List<Dict> reasonList = dictService.list(qw);
-            String reasonStrKey = reasonList.get(0).getStrValue();
-            reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
-
+//            QueryWrapper<Dict> qw = new QueryWrapper<>();
+//            qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
+//            qw.eq("dict_value", CommonConstant.MONEY_REASON_PARTNER_WITHDRAW);
+//            List<Dict> reasonList = dictService.list(qw);
+//            String reasonStrKey = reasonList.get(0).getStrValue();
+//            reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
 
             if (memberService.moneyChange(memberSeq, loginUser.getSeq(), prevMoneyAmount,
-                    prevMileageAmount, variableAmount, transactionClassification, CommonConstant.MONEY_REASON_PARTNER_PAYMENT, reason)) {
+                    prevMileageAmount, variableAmount, transactionClassification, note)) {
                 result.success("success");
             } else {
                 result.error505("fail");

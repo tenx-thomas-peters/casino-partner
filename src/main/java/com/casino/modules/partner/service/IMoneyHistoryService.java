@@ -24,8 +24,8 @@ public interface IMoneyHistoryService extends IService<MoneyHistory> {
 
 	Float getTotalWithdraw(Integer MONEY_OPERATION_TYPE_WITHDRAW);
 
-	IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page, String seq,
-			Integer operationType, String column, Integer order);
+	IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page, MoneyHistory moneyHistory, String seq,
+			 String column, Integer order);
 
 	boolean applicationWithdrawal(Integer variableAmount);
 

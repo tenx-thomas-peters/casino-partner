@@ -116,12 +116,43 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 	@Override
 	@Transactional(readOnly = false)
 	public boolean moneyChange(String memberSeq, String partnerSeq, Float prevMoneyAmount, Float prevMileageAmount,
-			Float variableAmount, Integer transactionClassification, Integer reasonType, String reason) {
+			Float variableAmount, Integer transactionClassification, String note) {
 		String seq = UUIDGenerator.generate();
 		String partnerseq = UUIDGenerator.generate();
 		Member member = getById(memberSeq);
 		Member partner = getById(partnerSeq);
+		Integer reasonTypeMember;
+		Integer reasonTypePartner;
+		Integer operationTypeMember;
+		Integer operationTypePartner;
+
+		String reasonMember = "";
+		String reasonPartner = "";
+
+		float finalAmountMember = 0f;
+		float finalAmountPartner = 0f;
 		boolean ret = false;
+
+			if(transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)){
+				finalAmountMember = prevMoneyAmount + variableAmount;
+				finalAmountPartner = partner.getMoneyAmount() - variableAmount;
+				operationTypeMember = CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT;
+				operationTypePartner = CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW;
+				reasonTypeMember = CommonConstant.MONEY_REASON_PARTNER_DEPOSIT;
+				reasonTypePartner = CommonConstant.MONEY_REASON_PARTNER_WITHDRAW;
+				reasonMember = "파트너->회원 (지급) ["+variableAmount + "]";
+				reasonPartner = "파트너->회원 (지급) [-"+variableAmount + "]";
+			}
+			else{
+				finalAmountMember = prevMoneyAmount - variableAmount;
+				finalAmountPartner = partner.getMoneyAmount() + variableAmount;
+				operationTypeMember = CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW;
+				operationTypePartner = CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT;
+				reasonTypeMember = CommonConstant.MONEY_REASON_PARTNER_WITHDRAW;
+				reasonTypePartner = CommonConstant.MONEY_REASON_PARTNER_DEPOSIT;
+				reasonMember = "파트너<-회원 (회수) [ -"+variableAmount + "]";
+				reasonPartner = "파트너<-회원 (회수) ["+variableAmount + "]";
+			}
 
 			MoneyHistory moneyHistory = new MoneyHistory();
 			moneyHistory.setSeq(seq);
@@ -132,22 +163,22 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			moneyHistory.setPrevAmount(prevMoneyAmount);
 			moneyHistory.setVariableAmount(variableAmount);
 			moneyHistory.setActualAmount(variableAmount);
-			Float finalAmount = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)
-					? prevMoneyAmount + variableAmount
-					: prevMoneyAmount - variableAmount;
-			moneyHistory.setFinalAmount(finalAmount);
-			moneyHistory.setOperationType(transactionClassification);
+			moneyHistory.setFinalAmount(finalAmountMember);
+			moneyHistory.setOperationType(operationTypeMember);
 			moneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_COMPLETE);
-			moneyHistory.setReasonType(reasonType);
-
-			String reasonMember = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)?
-					"파트너 지급 ["+variableAmount + "]":
-					"파트너 회수 [ -"+variableAmount + "]";
-
+			moneyHistory.setReasonType(reasonTypeMember);
+			moneyHistory.setNote(note);
 			moneyHistory.setReason(reasonMember);
 
-			member.setMoneyAmount(finalAmount);
-			
+			member.setMoneyAmount(finalAmountMember);
+
+			System.out.println("MemberServiceImpl==moneyChange==");
+			System.out.println("\tmember change money from **//"+reasonMember+"**//*******************************");
+			System.out.println("\t*** prevMoneyAmount: " + prevMoneyAmount);
+			System.out.println("\t*** variableAmount: " + variableAmount);
+			System.out.println("\t*** finalAmount: " + finalAmountMember);
+			System.out.println("\t*******************************************");
+
 			MoneyHistory partnerMoneyHistory = new MoneyHistory();
 			partnerMoneyHistory.setSeq(partnerseq);
 			partnerMoneyHistory.setPayer(memberSeq);
@@ -157,20 +188,20 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 			partnerMoneyHistory.setPrevAmount(partner.getMoneyAmount());
 			partnerMoneyHistory.setVariableAmount(variableAmount);
 			partnerMoneyHistory.setActualAmount(variableAmount);
-			Float partnerFinalAmount = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)
-					? partner.getMoneyAmount() - variableAmount
-					: partner.getMoneyAmount() + variableAmount;
-			partnerMoneyHistory.setFinalAmount(partnerFinalAmount);
-			partnerMoneyHistory.setOperationType(transactionClassification);
+			partnerMoneyHistory.setFinalAmount(finalAmountPartner);
+			partnerMoneyHistory.setOperationType(operationTypePartner);
 			partnerMoneyHistory.setStatus(CommonConstant.MONEY_HISTORY_STATUS_PARTNER_PAYMENT);
-			partnerMoneyHistory.setReasonType(reasonType);
-
-			String reasonPartner = transactionClassification.equals(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_TRANSFER_IN)?
-				"파트너 지급 [-"+variableAmount + "]":
-				"파트너 회수 ["+variableAmount + "]";
+			partnerMoneyHistory.setReasonType(reasonTypePartner);
 			partnerMoneyHistory.setReason(reasonPartner);
-			
-			partner.setMoneyAmount(partnerFinalAmount);
+
+			partner.setMoneyAmount(finalAmountPartner);
+
+			System.out.println("MemberServiceImpl==moneyChange==");
+			System.out.println("\tpartner change money from **//"+reasonPartner+"**//*******************************");
+			System.out.println("\t*** prevMoneyAmount: " + partner.getMoneyAmount());
+			System.out.println("\t*** variableAmount: " + variableAmount);
+			System.out.println("\t*** finalAmountPartner: " + finalAmountPartner);
+			System.out.println("\t*******************************************");
 
 			if (moneyHistoryService.save(moneyHistory) && moneyHistoryService.save(partnerMoneyHistory) && updateById(member) && updateById(partner)) {
 				ret = true;

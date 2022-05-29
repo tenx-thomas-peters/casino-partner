@@ -36,6 +36,5 @@ public interface IMemberService extends IService<Member> {
 	            Float prevMileageAmount,
 	            Float variableAmount,
 	            Integer transactionClassification,
-	            Integer reasonType,
-	            String reason);
+				String note);
 }

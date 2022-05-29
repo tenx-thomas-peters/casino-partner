@@ -51,6 +51,9 @@
 		<where>
 			mon.operation_type = #{entity.operationType}
 			AND mu.user_type = 0
+			<if test="entity.reasonType != null">
+				AND mon.reason_type = #{entity.reasonType}
+			</if>
 			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
 				AND DATE(mon.application_time) >= DATE(#{entity.fromProcessTime})
 			</if>
@@ -199,8 +202,11 @@
 			<if test="memberSeq != null and memberSeq != ''">
 				AND mh.receiver = #{memberSeq}
 			</if>
-			<if test="operationType != null">
-				AND mh.operation_type = #{operationType}
+			<if test="entity.operationType != null">
+				AND mh.operation_type = #{entity.operationType}
+			</if>
+			<if test="entity.reasonType != null">
+				AND mh.reason_type = #{entity.reasonType}
 			</if>
 		</where>
 		ORDER BY mh.application_time DESC
@@ -267,6 +273,7 @@
 		WHERE
 			m.user_type != #{userTypeAdmin}
 			AND m.user_type != #{userTypeNormal}
+			AND m.seq = #{loginSeq}
 			<if test="entity.fromProcessTime != null and entity.fromProcessTime != ''">
 				AND DATE(mh.process_time) >= DATE(#{entity.fromProcessTime})
 			</if>
@@ -282,18 +289,18 @@
 			<if test="entity.reasonType != null and entity.reasonType != ''">
 				AND mh.reason_type = #{entity.reasonType}
 			</if>
-			<choose>
-				<when test="userType != null and userType == userTypeDistributor">
-					<if test="loginSeq != null and loginSeq != ''">
-						AND m.seq = #{loginSeq}
-					</if>
-				</when>
-				<when test="userType != null and userType == userTypeSubHeadquarter">
-					<if test="loginSeq != null and loginSeq != ''">
-						AND m.sub_headquarter_seq = #{loginSeq}
-					</if>
-				</when>
-			</choose>
+<!--			<choose>-->
+<!--				<when test="userType != null and userType == userTypeDistributor">-->
+<!--					<if test="loginSeq != null and loginSeq != ''">-->
+<!--						AND m.seq = #{loginSeq}-->
+<!--					</if>-->
+<!--				</when>-->
+<!--				<when test="userType != null and userType == userTypeSubHeadquarter">-->
+<!--					<if test="loginSeq != null and loginSeq != ''">-->
+<!--						AND m.sub_headquarter_seq = #{loginSeq}-->
+<!--					</if>-->
+<!--				</when>-->
+<!--			</choose>-->
 		ORDER BY
 		mh.process_time DESC
 	</select>

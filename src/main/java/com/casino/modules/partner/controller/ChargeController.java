@@ -55,6 +55,7 @@ public class ChargeController {
 			moneyHistory.setPartnerSeq(loginUser.getSeq());
 			moneyHistory.setPartnerType(loginUser.getUserType());
 			moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT);
+			moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
             IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
             Float totalApplicationAmount = 0.0f;
             Float totalActualAmount = 0.0f;
@@ -73,6 +74,7 @@ public class ChargeController {
             model.addAttribute("url", "/charge/list");
 		} catch(Exception e) {
 			log.error("url: /member/memberDepositLog --- method: memberDepositLog --- error: " + e.toString());
+			e.printStackTrace();
 		}
 		return "views/partner/member/memberDepositLog";
 	}
@@ -94,6 +96,7 @@ public class ChargeController {
 			moneyHistory.setPartnerSeq(loginUser.getSeq());
 			moneyHistory.setPartnerType(loginUser.getUserType());
 			moneyHistory.setOperationType(CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL);
+			moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
 			IPage<MoneyHistory> pageList = moneyHistoryService.findList(page, moneyHistory, column, order);
 
 			Float totalWithdraw = moneyHistoryService.getTotalWithdraw(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
@@ -117,9 +120,11 @@ public class ChargeController {
     		HttpServletRequest request) {
 		try {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
+			MoneyHistory moneyHistory = new MoneyHistory();
+			moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT);
+			moneyHistory.setReasonType(CommonConstant.MONEY_REASON_DEPOSIT);
 			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
-            IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, loginUser.getSeq(),
-            		CommonConstant.MONEY_HISTORY_OPERATION_TYPE_DEPOSIT, column, order);
+            IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, moneyHistory, loginUser.getSeq(), column, order);
 
             model.addAttribute("page", pageList);
             model.addAttribute("pageNo", pageNo);
@@ -145,8 +150,11 @@ public class ChargeController {
 			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
 			Page<MoneyHistory> page = new Page<MoneyHistory>(pageNo, pageSize);
 
-			IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, loginUser.getSeq(),
-					CommonConstant.MONEY_HISTORY_OPERATION_TYPE_WITHDRAWAL, column, order);
+			MoneyHistory moneyHistory = new MoneyHistory();
+			moneyHistory.setOperationType(CommonConstant.MONEY_OPERATION_TYPE_WITHDRAW);
+			moneyHistory.setReasonType(CommonConstant.MONEY_REASON_WITHDRAW);
+
+			IPage<MoneyHistory> pageList = moneyHistoryService.getDepositWithdrawByMemberSeq(page, moneyHistory, loginUser.getSeq(), column, order);
 
 			model.addAttribute("page", pageList);
 			model.addAttribute("member", loginUser);

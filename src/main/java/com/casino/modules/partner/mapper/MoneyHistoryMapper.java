@@ -42,9 +42,9 @@ public interface MoneyHistoryMapper extends BaseMapper<MoneyHistory> {
 	Float getTotalWithdraw(@Param("MONEY_OPERATION_TYPE_WITHDRAW") Integer MONEY_OPERATION_TYPE_WITHDRAW);
 
 	IPage<MoneyHistory> getDepositWithdrawByMemberSeq(Page<MoneyHistory> page,
-			@Param("memberSeq") String memberSeq,
-			@Param("operationType") Integer operationType, 
-			@Param("column") String column, 
+		  	@Param("entity") MoneyHistory moneyHistory,
+		  	@Param("memberSeq") String memberSeq,
+			@Param("column") String column,
 			@Param("order") Integer order);
 
 	IPage<MoneyHistory> getWithdrawalListByUserInfo(
