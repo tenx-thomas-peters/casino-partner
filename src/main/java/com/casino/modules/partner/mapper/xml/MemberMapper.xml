@@ -475,6 +475,7 @@
 			m1.betting_possible,
 			m1.recommendable,
 			m1.memo,
+			m1.casino_money,
 			IFNULL(m1.slot_rate, 0) AS slotRate,
 			IFNULL(m1.baccarat_rate, 0) AS baccaratRate,
 			m2.seq AS StoreSeq,

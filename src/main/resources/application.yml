@@ -132,3 +132,8 @@ password: root
 db-username: root
 backup-root: C:\\temp\\
 uploadPath: /uploads
+
+gameServer:
+  # url: "http://localhost:9091/casino"
+  url: "https://api.honorlink.org/api"
+  apiKey: "Bearer Jv49qGTvgDGYZPtTrVSMJpYaNx2NR95W5x3q8E8M"

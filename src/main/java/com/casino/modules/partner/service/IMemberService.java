@@ -29,12 +29,9 @@ public interface IMemberService extends IService<Member> {
 
 	IPage<MemberForm> getMemberList(Page<MemberForm> page, MemberForm member, String column, Integer order);
 	
-	boolean moneyChange(
-	            String memberSeq,
-	            String partnerSeq,
-	            Float prevMoneyAmount,
-	            Float prevMileageAmount,
-	            Float variableAmount,
-	            Integer transactionClassification,
-				String note);
+	boolean moneyPaymentChange(Member member, Member partner, Float variableAmount, String note);
+
+	boolean moneyRecoverChange(Member member, Member partner, Float variableAmount, String note);
+
+	boolean moneyWithdrawFromCasino(Member member, Float restAmount);
 }

@@ -27,6 +27,9 @@ public class Member implements Serializable {
     @TableField(value = "name")
     private String name;
 
+    @TableField(exist = false)
+    private String username;
+
     @TableField(value = "nickname")
     private String nickname;
 
@@ -44,6 +47,9 @@ public class Member implements Serializable {
 
     @TableField(value = "sub_headquarter_seq")
     private String subHeadquarterSeq;
+
+    @TableField(value = "casino_money")
+    private Float casinoMoney;
 
     @TableField(value = "money_amount")
     private Float moneyAmount;
@@ -149,4 +155,8 @@ public class Member implements Serializable {
     
     @TableField(exist = false)
     private String verifyPwd;
+
+    // for game server api
+    @TableField(exist = false)
+    private Float amount;
 }

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,12 +44,19 @@ import com.casino.modules.partner.service.IMemberService;
 import com.casino.modules.partner.service.IMoneyHistoryService;
 import com.casino.modules.partner.service.IDictService;
 
+import com.casino.common.utils.HttpUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping(value = "/member")
 @Slf4j
 public class MemberController {
+	@Value(value = "${gameServer.url}")
+	private String gameServerUrl;
+
+	@Value(value = "${gameServer.apiKey}")
+	private String apiKey;
 	
 	@Autowired
 	IMemberService memberService;
@@ -401,20 +410,46 @@ public class MemberController {
             @RequestParam(value = "note", defaultValue = "") String note) {
         Result<JSONObject> result = new Result<>();
         try {
-			Member loginUser = (Member) SecurityUtils.getSubject().getPrincipal();
-//            QueryWrapper<Dict> qw = new QueryWrapper<>();
-//            qw.eq("dict_key", CommonConstant.DICT_KEY_MONEY_REASON);
-//            qw.eq("dict_value", CommonConstant.MONEY_REASON_PARTNER_WITHDRAW);
-//            List<Dict> reasonList = dictService.list(qw);
-//            String reasonStrKey = reasonList.get(0).getStrValue();
-//            reason = messageSource.getMessage(reasonStrKey, null, Locale.ENGLISH);
+			Member partner = (Member) SecurityUtils.getSubject().getPrincipal();
+			Member member = memberService.getById(memberSeq);
+			float holdingTotalMoney = member.getCasinoMoney() + member.getMoneyAmount();
 
-            if (memberService.moneyChange(memberSeq, loginUser.getSeq(), prevMoneyAmount,
-                    prevMileageAmount, variableAmount, transactionClassification, note)) {
-                result.success("success");
-            } else {
-                result.error505("fail");
-            }
+			// add money to member
+			if(transactionClassification.equals(CommonConstant.MONEY_OPERATION_TYPE_DEPOSIT)){
+				if (memberService.moneyPaymentChange(member, partner, variableAmount, note)) {
+					result.success("success");
+				} else {
+					result.error505("fail");
+				}
+			}
+			else{ // add money to member
+				if (variableAmount > holdingTotalMoney ) { //smaller than variableAmount
+					result.error505("머니가 부족합니다. 머니를 체크해주세요");
+				} else {
+					// save money history for trasfer money from casino to site money --------------- <
+					if(member.getMoneyAmount() < variableAmount){
+						float restAmount = variableAmount - member.getMoneyAmount();
+						ResponseEntity<String> ret = HttpUtils.userSubBalance(gameServerUrl + "/user/sub-balance", member.getId(), restAmount, apiKey);
+
+						if (ret.getStatusCode().value() == 200) {
+							memberService.moneyWithdrawFromCasino(member,restAmount);
+
+							member.setCasinoMoney(member.getCasinoMoney() - restAmount);
+							member.setMoneyAmount(member.getMoneyAmount() + restAmount);
+						}
+						else{
+							result.error505("/user/sub-balance request failed");
+						}
+					} // save money history for trasfer money from casino to site money --------------- />
+
+					// sub money from site money
+					if (memberService.moneyRecoverChange(member, partner, variableAmount, note)){
+						result.success("success");
+					} else {
+						result.error505("fail");
+					}
+				}
+			}
         } catch (Exception e) {
             log.error("url: /member/updateHoldingMoney --- method: updateMemberHoldingMoney --- message: " + e.toString());
             result.error500("Internal Server Error");
