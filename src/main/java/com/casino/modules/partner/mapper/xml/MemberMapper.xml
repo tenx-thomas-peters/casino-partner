@@ -827,6 +827,7 @@
 		level.level_name AS levelName,
 		IFNULL(SUM(bs.slot_betting_amount),0)  AS slotBettingAmount,
 		IFNULL(SUM(bs.baccarat_betting_amount),0)  AS baccaratBettingAmount,
+		IFNULL(SUM(bs.baccarat_virtual_betting_amount),0)  AS baccaratVirtualBettingAmount,
 		IFNULL(SUM(bs.slot_winning_amount),0)  AS slotWinningAmount,
 		IFNULL(SUM(bs.baccarat_winning_amount),0)  AS baccaratWinningAmount,
 		IFNULL(SUM(bs.slot_lost_amount),0)  AS slotLostAmount,
