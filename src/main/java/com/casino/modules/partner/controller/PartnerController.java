@@ -244,6 +244,7 @@ public class PartnerController {
 
 			Float slotBetAmountSum = 0f;
 			Float baccaratBetAmountSum = 0f;
+			Float baccaratVirtualBetAmountSum = 0f;
 			Float slotWinningAmountSum = 0f;
 			Float baccaratWinningAmountSum = 0f;
 			Float slotLostAmountSum = 0f;
@@ -259,6 +260,7 @@ public class PartnerController {
 					slotBatRollingSum += item.getSlotStoreRollingAmount();
 
 					baccaratBetAmountSum += item.getBaccaratBettingAmount();
+					baccaratVirtualBetAmountSum += item.getBaccaratVirtualBettingAmount();
 					baccaratWinningAmountSum += item.getBaccaratWinningAmount();
 					baccaratLostAmountSum += item.getBaccaratLostAmount();
 					baccaratBatRollingSum += item.getBaccaratStoreRollingAmount();
@@ -288,6 +290,7 @@ public class PartnerController {
 			model.addAttribute("slotWinningAmountSum", slotWinningAmountSum);
 			model.addAttribute("slotLostAmountSum", slotLostAmountSum);
 			model.addAttribute("slotBatRollingSum", slotBatRollingSum);
+			model.addAttribute("baccaratVirtualBetAmountSum", baccaratVirtualBetAmountSum);
 			model.addAttribute("baccaratBetAmountSum", baccaratBetAmountSum);
 			model.addAttribute("baccaratWinningAmountSum", baccaratWinningAmountSum);
 			model.addAttribute("baccaratLostAmountSum", baccaratLostAmountSum);
